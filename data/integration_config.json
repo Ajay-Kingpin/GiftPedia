@@ -1,0 +1,13 @@
+{
+  "mcp_enabled": true,
+  "amazon_enabled": true,
+  "price_tracking_enabled": true,
+  "affiliate_links_enabled": true,
+  "catalog_sync_enabled": true,
+  "auto_sync_interval_hours": 6,
+  "price_update_interval_minutes": 30,
+  "max_recommendations": 10,
+  "min_confidence_score": 0.3,
+  "price_drop_threshold": 10.0,
+  "out_of_stock_filter": true
+}

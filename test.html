@@ -1,0 +1,280 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>GiftPedia Test</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+            background-color: #f5f5f5;
+        }
+        .container {
+            background: white;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+        h1 {
+            color: #333;
+            text-align: center;
+            margin-bottom: 30px;
+        }
+        .form-group {
+            margin-bottom: 20px;
+        }
+        label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: bold;
+            color: #555;
+        }
+        textarea {
+            width: 100%;
+            height: 100px;
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            font-size: 16px;
+            resize: vertical;
+        }
+        button {
+            background-color: #0070f3;
+            color: white;
+            padding: 12px 24px;
+            border: none;
+            border-radius: 5px;
+            font-size: 16px;
+            cursor: pointer;
+            width: 100%;
+            margin-bottom: 20px;
+        }
+        button:hover {
+            background-color: #0056b3;
+        }
+        .results {
+            background-color: #f8f9fa;
+            padding: 20px;
+            border-radius: 5px;
+            margin-top: 20px;
+        }
+        .product-card {
+            background: white;
+            padding: 20px;
+            margin-bottom: 20px;
+            border-radius: 8px;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+        }
+        .product-image {
+            width: 100%;
+            height: 200px;
+            background-color: #e0e0e0;
+            border-radius: 5px;
+            margin-bottom: 15px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #666;
+        }
+        .product-name {
+            font-size: 18px;
+            font-weight: bold;
+            margin-bottom: 5px;
+        }
+        .product-price {
+            font-size: 20px;
+            color: #0070f3;
+            font-weight: bold;
+            margin-bottom: 10px;
+        }
+        .test-links {
+            text-align: center;
+            margin-top: 30px;
+        }
+        .test-links a {
+            display: inline-block;
+            margin: 0 10px;
+            padding: 8px 16px;
+            background-color: #6c757d;
+            color: white;
+            text-decoration: none;
+            border-radius: 4px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🎁 GiftPedia Test Page</h1>
+        
+        <div class="form-group">
+            <label for="giftRequest">Describe your gift idea:</label>
+            <textarea id="giftRequest" placeholder="Birthday gift for brother who loves music, budget ₹2000"></textarea>
+        </div>
+        
+        <button onclick="getRecommendations()">Get Gift Recommendations</button>
+        
+        <div id="results" class="results" style="display: none;">
+            <h2>Your Gift Recommendations</h2>
+            <p>Found 2 personalized recommendations based on your request.</p>
+            
+            <div class="product-card">
+                <div class="product-image">🎸 Guitar Strap Image</div>
+                <div class="product-name">Fender Guitar Strap</div>
+                <p>Music & Instruments • Fender</p>
+                <div class="product-price">₹1899</div>
+                <button onclick="viewDetails('prod_001')">View Details</button>
+            </div>
+            
+            <div class="product-card">
+                <div class="product-image">🎧 Headphones Image</div>
+                <div class="product-name">Wireless Headphones</div>
+                <p>Electronics • Sony</p>
+                <div class="product-price">₹2499</div>
+                <button onclick="viewDetails('prod_002')">View Details</button>
+            </div>
+        </div>
+        
+        <div class="test-links">
+            <h3>Test Links</h3>
+            <a href="http://localhost:8000/health">API Health Check</a>
+            <a href="http://localhost:8000/docs">API Documentation</a>
+        </div>
+    </div>
+
+    <script>
+        let currentRecommendations = [];
+
+        async function getRecommendations() {
+            const request = document.getElementById('giftRequest').value;
+            console.log('Getting recommendations for:', request);
+            
+            // Show loading state
+            const button = document.querySelector('button');
+            const originalText = button.textContent;
+            button.textContent = 'Getting Recommendations...';
+            button.disabled = true;
+            
+            try {
+                // Call the real API
+                const response = await fetch('http://localhost:8000/recommendations', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({
+                        user_input: request,
+                        max_recommendations: 5
+                    })
+                });
+                
+                const data = await response.json();
+                console.log('API Response:', data);
+                
+                if (data.success) {
+                    currentRecommendations = data.data.recommendations;
+                    displayRecommendations(data.data);
+                } else {
+                    displayError(data.error || 'Failed to get recommendations');
+                }
+            } catch (error) {
+                console.error('API Error:', error);
+                displayError('Unable to connect to API. Please ensure the backend server is running.');
+            } finally {
+                button.textContent = originalText;
+                button.disabled = false;
+            }
+        }
+        
+        function displayRecommendations(data) {
+            const resultsDiv = document.getElementById('results');
+            const recommendationsHtml = data.recommendations.map((product, index) => `
+                <div class="product-card">
+                    <div class="product-image">
+                        <img src="${product.image_url}" alt="${product.name}" style="width: 100%; height: 100%; object-fit: cover; border-radius: 5px;" onerror="this.style.display='none'; this.parentElement.innerHTML='🎁 Product Image';">
+                    </div>
+                    <div class="product-name">${product.name}</div>
+                    <p>${product.category} • ${product.brand}</p>
+                    <div class="product-price">₹${product.price_inr}</div>
+                    <div style="margin-bottom: 10px;">
+                        <span style="background-color: #0070f3; color: white; padding: 4px 8px; border-radius: 12px; font-size: 12px;">
+                            Score: ${Math.round(product.final_score * 100)}%
+                        </span>
+                    </div>
+                    <button onclick="viewDetails('${product.product_id}')">View Details</button>
+                </div>
+            `).join('');
+            
+            resultsDiv.innerHTML = `
+                <h2>Your Gift Recommendations</h2>
+                <p>${data.summary || `Found ${data.recommendations.length} personalized recommendations based on your request.`}</p>
+                ${recommendationsHtml}
+                ${data.explanations ? `
+                    <div style="margin-top: 30px; padding: 20px; background-color: #e3f2fd; border-radius: 8px;">
+                        <h3>Why These Recommendations?</h3>
+                        ${data.explanations.slice(0, 2).map(exp => `
+                            <div style="margin-bottom: 15px;">
+                                <strong>${exp.product_name}:</strong>
+                                <p style="margin: 5px 0; color: #1976d2;">${exp.explanation}</p>
+                                <div style="font-size: 12px; color: #666;">
+                                    Confidence: ${Math.round(exp.confidence_score * 100)}%
+                                </div>
+                            </div>
+                        `).join('')}
+                    </div>
+                ` : ''}
+            `;
+            
+            resultsDiv.style.display = 'block';
+            resultsDiv.scrollIntoView({ behavior: 'smooth' });
+        }
+        
+        function displayError(message) {
+            const resultsDiv = document.getElementById('results');
+            resultsDiv.innerHTML = `
+                <div style="background-color: #ffebee; color: #c62828; padding: 15px; border-radius: 5px; margin-bottom: 20px;">
+                    <strong>Error:</strong> ${message}
+                </div>
+                <button onclick="document.getElementById('results').style.display='none';">Try Again</button>
+            `;
+            resultsDiv.style.display = 'block';
+            resultsDiv.scrollIntoView({ behavior: 'smooth' });
+        }
+        
+        function viewDetails(productId) {
+            const product = currentRecommendations.find(p => p.product_id === productId);
+            if (product) {
+                alert(`Product Details:\n\nName: ${product.name}\nCategory: ${product.category}\nBrand: ${product.brand}\nPrice: ₹${product.price_inr}\n\nTags: ${product.interest_tags ? product.interest_tags.join(', ') : 'N/A'}\n\nAffiliate Link: ${product.affiliate_link || 'N/A'}`);
+            }
+        }
+        
+        // Test API connection on page load
+        fetch('http://localhost:8000/health')
+            .then(response => response.json())
+            .then(data => {
+                console.log('✅ API Health:', data);
+                // Add API status indicator
+                const statusDiv = document.createElement('div');
+                statusDiv.innerHTML = `
+                    <div style="background-color: #d4edda; color: #155724; padding: 10px; border-radius: 5px; margin-bottom: 20px; text-align: center;">
+                        ✅ API Connected (${data.version})
+                    </div>
+                `;
+                document.querySelector('.container').insertBefore(statusDiv, document.querySelector('h1').nextSibling);
+            })
+            .catch(error => {
+                console.log('❌ API Error:', error);
+                // Add API status indicator
+                const statusDiv = document.createElement('div');
+                statusDiv.innerHTML = `
+                    <div style="background-color: #f8d7da; color: #721c24; padding: 10px; border-radius: 5px; margin-bottom: 20px; text-align: center;">
+                        ❌ API Not Connected - Please start backend server
+                    </div>
+                `;
+                document.querySelector('.container').insertBefore(statusDiv, document.querySelector('h1').nextSibling);
+            });
+    </script>
+</body>
+</html>

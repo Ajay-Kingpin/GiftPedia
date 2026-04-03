@@ -1,0 +1,14 @@
+{
+  "cb62676e916890acb149733dbebab41a": {
+    "product_id": "test_001",
+    "source": "amazon",
+    "original_url": "https://amazon.com/dp/B001234567",
+    "affiliate_url": "https://www.amazon.com/dp/test_001?tag=giftpedia-test-20",
+    "tracking_id": "giftpedia-test-20",
+    "commission_rate": 4.0,
+    "created_at": "2026-04-03T12:47:23.386677",
+    "clicks": 1,
+    "conversions": 1,
+    "revenue": 4.0
+  }
+}

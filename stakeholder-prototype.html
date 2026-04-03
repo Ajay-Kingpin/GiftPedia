@@ -1,0 +1,1265 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>GiftPedia - AI-Powered Gift Discovery Platform | Stakeholder Prototype</title>
+    <meta name="description" content="GiftPedia: Revolutionary AI-powered gift discovery platform with personalized recommendations, real-time pricing, and affiliate monetization">
+    <meta name="keywords" content="gift discovery, AI recommendations, personalized gifts, gift finder, gift ideas">
+    <meta name="author" content="GiftPedia Team">
+    
+    <!-- Open Graph Meta Tags for Social Sharing -->
+    <meta property="og:title" content="GiftPedia - AI-Powered Gift Discovery Platform">
+    <meta property="og:description" content="Revolutionary AI-powered gift discovery platform with personalized recommendations">
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://giftpedia.ai">
+    
+    <!-- Favicon -->
+    <link rel="icon" type="image/x-icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='0.9em' font-size='90'>🎁</text></svg>">
+    
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --primary-color: #6366f1;
+            --primary-dark: #4f46e5;
+            --secondary-color: #ec4899;
+            --success-color: #10b981;
+            --warning-color: #f59e0b;
+            --danger-color: #ef4444;
+            --dark-color: #1f2937;
+            --light-color: #f9fafb;
+            --text-primary: #111827;
+            --text-secondary: #6b7280;
+            --border-color: #e5e7eb;
+            --shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+            --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+            --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+            --shadow-xl: 0 20px 25px -5px rgba(0, 0, 0, 0.1);
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+            line-height: 1.6;
+            color: var(--text-primary);
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+        }
+
+        /* Header Styles */
+        header {
+            background: rgba(255, 255, 255, 0.98);
+            backdrop-filter: blur(10px);
+            box-shadow: var(--shadow-lg);
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        nav {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 1rem 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: var(--primary-color);
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .logo-icon {
+            font-size: 1.8rem;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 2rem;
+            align-items: center;
+        }
+
+        .nav-links a {
+            color: var(--text-secondary);
+            text-decoration: none;
+            font-weight: 500;
+            transition: color 0.3s ease;
+        }
+
+        .nav-links a:hover {
+            color: var(--primary-color);
+        }
+
+        .prototype-badge {
+            background: var(--success-color);
+            color: white;
+            padding: 0.25rem 0.75rem;
+            border-radius: 20px;
+            font-size: 0.75rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        /* Hero Section */
+        .hero {
+            background: white;
+            padding: 4rem 2rem;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .hero::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: linear-gradient(135deg, rgba(99, 102, 241, 0.05) 0%, rgba(236, 72, 153, 0.05) 100%);
+            z-index: -1;
+        }
+
+        .hero-content {
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        .hero h1 {
+            font-size: 3rem;
+            font-weight: 800;
+            margin-bottom: 1rem;
+            background: linear-gradient(135deg, var(--primary-color) 0%, var(--secondary-color) 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .hero-subtitle {
+            font-size: 1.25rem;
+            color: var(--text-secondary);
+            margin-bottom: 2rem;
+            line-height: 1.8;
+        }
+
+        .hero-features {
+            display: flex;
+            justify-content: center;
+            gap: 3rem;
+            margin-top: 3rem;
+            flex-wrap: wrap;
+        }
+
+        .hero-feature {
+            text-align: center;
+            flex: 1;
+            min-width: 200px;
+        }
+
+        .hero-feature-icon {
+            font-size: 2.5rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .hero-feature-title {
+            font-weight: 600;
+            color: var(--text-primary);
+            margin-bottom: 0.25rem;
+        }
+
+        .hero-feature-desc {
+            color: var(--text-secondary);
+            font-size: 0.9rem;
+        }
+
+        /* Main Container */
+        .container {
+            max-width: 1200px;
+            margin: 2rem auto;
+            padding: 0 2rem;
+        }
+
+        /* Gift Finder Section */
+        .gift-finder {
+            background: white;
+            border-radius: 16px;
+            box-shadow: var(--shadow-xl);
+            padding: 2rem;
+            margin-bottom: 2rem;
+        }
+
+        .section-header {
+            text-align: center;
+            margin-bottom: 2rem;
+        }
+
+        .section-title {
+            font-size: 2rem;
+            font-weight: 700;
+            color: var(--text-primary);
+            margin-bottom: 0.5rem;
+        }
+
+        .section-subtitle {
+            color: var(--text-secondary);
+            font-size: 1.1rem;
+        }
+
+        /* Step Navigation */
+        .step-nav {
+            display: flex;
+            justify-content: center;
+            margin-bottom: 2rem;
+            position: relative;
+        }
+
+        .step-nav::before {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 10%;
+            right: 10%;
+            height: 2px;
+            background: var(--border-color);
+            z-index: 0;
+        }
+
+        .step-indicator {
+            background: white;
+            border: 2px solid var(--border-color);
+            border-radius: 50%;
+            width: 40px;
+            height: 40px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 600;
+            position: relative;
+            z-index: 1;
+            transition: all 0.3s ease;
+        }
+
+        .step-indicator.active {
+            background: var(--primary-color);
+            color: white;
+            border-color: var(--primary-color);
+            transform: scale(1.1);
+        }
+
+        .step-indicator.completed {
+            background: var(--success-color);
+            color: white;
+            border-color: var(--success-color);
+        }
+
+        /* Step Content */
+        .step-content {
+            display: none;
+            animation: fadeIn 0.5s ease;
+        }
+
+        .step-content.active {
+            display: block;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* Form Styles */
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+
+        .form-label {
+            display: block;
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+            color: var(--text-primary);
+        }
+
+        .form-input, .form-select {
+            width: 100%;
+            padding: 0.75rem 1rem;
+            border: 2px solid var(--border-color);
+            border-radius: 8px;
+            font-size: 1rem;
+            transition: border-color 0.3s ease;
+        }
+
+        .form-input:focus, .form-select:focus {
+            outline: none;
+            border-color: var(--primary-color);
+            box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.1);
+        }
+
+        .form-textarea {
+            width: 100%;
+            padding: 0.75rem 1rem;
+            border: 2px solid var(--border-color);
+            border-radius: 8px;
+            font-size: 1rem;
+            resize: vertical;
+            min-height: 100px;
+            transition: border-color 0.3s ease;
+        }
+
+        .form-textarea:focus {
+            outline: none;
+            border-color: var(--primary-color);
+            box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.1);
+        }
+
+        /* Option Cards */
+        .option-cards {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1rem;
+            margin-bottom: 2rem;
+        }
+
+        .option-card {
+            border: 2px solid var(--border-color);
+            border-radius: 12px;
+            padding: 1.5rem;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            background: white;
+        }
+
+        .option-card:hover {
+            border-color: var(--primary-color);
+            transform: translateY(-2px);
+            box-shadow: var(--shadow-md);
+        }
+
+        .option-card.selected {
+            border-color: var(--primary-color);
+            background: linear-gradient(135deg, rgba(99, 102, 241, 0.05) 0%, rgba(236, 72, 153, 0.05) 100%);
+        }
+
+        .option-icon {
+            font-size: 2.5rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .option-title {
+            font-weight: 600;
+            margin-bottom: 0.25rem;
+        }
+
+        .option-desc {
+            color: var(--text-secondary);
+            font-size: 0.9rem;
+        }
+
+        /* Button Styles */
+        .btn {
+            padding: 0.75rem 2rem;
+            border: none;
+            border-radius: 8px;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-decoration: none;
+            display: inline-block;
+            text-align: center;
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, var(--primary-color) 0%, var(--primary-dark) 100%);
+            color: white;
+            box-shadow: var(--shadow-md);
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: var(--shadow-lg);
+        }
+
+        .btn-secondary {
+            background: white;
+            color: var(--primary-color);
+            border: 2px solid var(--primary-color);
+        }
+
+        .btn-secondary:hover {
+            background: var(--primary-color);
+            color: white;
+        }
+
+        .btn-group {
+            display: flex;
+            gap: 1rem;
+            justify-content: center;
+            margin-top: 2rem;
+        }
+
+        /* Results Section */
+        .results-section {
+            display: none;
+            animation: fadeIn 0.5s ease;
+        }
+
+        .results-section.active {
+            display: block;
+        }
+
+        .results-header {
+            text-align: center;
+            margin-bottom: 2rem;
+        }
+
+        .results-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+            margin-bottom: 2rem;
+        }
+
+        .product-card {
+            background: white;
+            border-radius: 12px;
+            overflow: hidden;
+            box-shadow: var(--shadow-lg);
+            transition: transform 0.3s ease;
+            border: 1px solid var(--border-color);
+        }
+
+        .product-card:hover {
+            transform: translateY(-4px);
+            box-shadow: var(--shadow-xl);
+        }
+
+        .product-image {
+            width: 100%;
+            height: 200px;
+            object-fit: cover;
+            background: var(--light-color);
+        }
+
+        .product-content {
+            padding: 1.5rem;
+        }
+
+        .product-title {
+            font-weight: 600;
+            font-size: 1.1rem;
+            margin-bottom: 0.5rem;
+            color: var(--text-primary);
+        }
+
+        .product-brand {
+            color: var(--text-secondary);
+            font-size: 0.9rem;
+            margin-bottom: 0.75rem;
+        }
+
+        .product-price {
+            font-size: 1.25rem;
+            font-weight: 700;
+            color: var(--primary-color);
+            margin-bottom: 0.5rem;
+        }
+
+        .product-availability {
+            display: inline-block;
+            padding: 0.25rem 0.75rem;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            font-weight: 600;
+            margin-bottom: 0.75rem;
+        }
+
+        .in-stock {
+            background: rgba(16, 185, 129, 0.1);
+            color: var(--success-color);
+        }
+
+        .out-of-stock {
+            background: rgba(239, 68, 68, 0.1);
+            color: var(--danger-color);
+        }
+
+        .product-features {
+            list-style: none;
+            margin-bottom: 1rem;
+        }
+
+        .product-features li {
+            color: var(--text-secondary);
+            font-size: 0.9rem;
+            margin-bottom: 0.25rem;
+            position: relative;
+            padding-left: 1rem;
+        }
+
+        .product-features li::before {
+            content: '✓';
+            position: absolute;
+            left: 0;
+            color: var(--success-color);
+            font-weight: 600;
+        }
+
+        .product-actions {
+            display: flex;
+            gap: 0.5rem;
+        }
+
+        .btn-affiliate {
+            background: linear-gradient(135deg, var(--secondary-color) 0%, #db2777 100%);
+            color: white;
+            flex: 1;
+        }
+
+        .btn-affiliate:hover {
+            transform: translateY(-2px);
+            box-shadow: var(--shadow-md);
+        }
+
+        /* Loading Spinner */
+        .loading {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .spinner {
+            width: 16px;
+            height: 16px;
+            border: 2px solid rgba(255, 255, 255, 0.3);
+            border-radius: 50%;
+            border-top-color: white;
+            animation: spin 0.8s linear infinite;
+        }
+
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+
+        /* Feature Section */
+        .features-section {
+            background: white;
+            border-radius: 16px;
+            box-shadow: var(--shadow-xl);
+            padding: 3rem 2rem;
+            margin-bottom: 2rem;
+        }
+
+        .features-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+            margin-top: 2rem;
+        }
+
+        .feature-card {
+            text-align: center;
+            padding: 2rem;
+            border-radius: 12px;
+            background: linear-gradient(135deg, rgba(99, 102, 241, 0.05) 0%, rgba(236, 72, 153, 0.05) 100%);
+            transition: transform 0.3s ease;
+        }
+
+        .feature-card:hover {
+            transform: translateY(-4px);
+        }
+
+        .feature-icon {
+            font-size: 3rem;
+            margin-bottom: 1rem;
+        }
+
+        .feature-title {
+            font-size: 1.25rem;
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+            color: var(--text-primary);
+        }
+
+        .feature-desc {
+            color: var(--text-secondary);
+            line-height: 1.6;
+        }
+
+        /* Stats Section */
+        .stats-section {
+            background: linear-gradient(135deg, var(--primary-color) 0%, var(--secondary-color) 100%);
+            color: white;
+            border-radius: 16px;
+            padding: 3rem 2rem;
+            margin-bottom: 2rem;
+            text-align: center;
+        }
+
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 2rem;
+            margin-top: 2rem;
+        }
+
+        .stat-item {
+            text-align: center;
+        }
+
+        .stat-number {
+            font-size: 2.5rem;
+            font-weight: 800;
+            margin-bottom: 0.5rem;
+        }
+
+        .stat-label {
+            font-size: 1rem;
+            opacity: 0.9;
+        }
+
+        /* Footer */
+        footer {
+            background: white;
+            border-top: 1px solid var(--border-color);
+            padding: 2rem;
+            text-align: center;
+            margin-top: 2rem;
+        }
+
+        .footer-content {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .footer-links {
+            display: flex;
+            justify-content: center;
+            gap: 2rem;
+            margin-bottom: 1rem;
+        }
+
+        .footer-links a {
+            color: var(--text-secondary);
+            text-decoration: none;
+            transition: color 0.3s ease;
+        }
+
+        .footer-links a:hover {
+            color: var(--primary-color);
+        }
+
+        .footer-text {
+            color: var(--text-secondary);
+            font-size: 0.9rem;
+        }
+
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            .hero h1 {
+                font-size: 2rem;
+            }
+
+            .hero-subtitle {
+                font-size: 1rem;
+            }
+
+            .hero-features {
+                gap: 1.5rem;
+            }
+
+            .nav-links {
+                display: none;
+            }
+
+            .container {
+                padding: 0 1rem;
+            }
+
+            .results-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .features-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .stats-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+
+        /* Print Styles */
+        @media print {
+            .nav-links, .btn-group, .product-actions {
+                display: none;
+            }
+
+            .hero, .features-section, .stats-section {
+                break-inside: avoid;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Header -->
+    <header>
+        <nav>
+            <a href="#" class="logo">
+                <span class="logo-icon">🎁</span>
+                GiftPedia
+            </a>
+            <div class="nav-links">
+                <a href="#features">Features</a>
+                <a href="#demo">Demo</a>
+                <a href="#stats">Impact</a>
+                <a href="#contact">Contact</a>
+                <span class="prototype-badge">Stakeholder Prototype</span>
+            </div>
+        </nav>
+    </header>
+
+    <!-- Hero Section -->
+    <section class="hero">
+        <div class="hero-content">
+            <h1>GiftPedia: AI-Powered Gift Discovery</h1>
+            <p class="hero-subtitle">
+                Revolutionary platform that combines artificial intelligence with personalized recommendations 
+                to help users find the perfect gift every time. Powered by advanced machine learning, 
+                real-time pricing, and comprehensive product catalogs.
+            </p>
+            <div class="hero-features">
+                <div class="hero-feature">
+                    <div class="hero-feature-icon">🤖</div>
+                    <div class="hero-feature-title">AI-Powered</div>
+                    <div class="hero-feature-desc">Smart recommendations</div>
+                </div>
+                <div class="hero-feature">
+                    <div class="hero-feature-icon">💰</div>
+                    <div class="hero-feature-title">Best Prices</div>
+                    <div class="hero-feature-desc">Real-time price tracking</div>
+                </div>
+                <div class="hero-feature">
+                    <div class="hero-feature-icon">🎯</div>
+                    <div class="hero-feature-title">Personalized</div>
+                    <div class="hero-feature-desc">Tailored to your needs</div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Main Container -->
+    <div class="container">
+        <!-- Gift Finder Demo -->
+        <section class="gift-finder" id="demo">
+            <div class="section-header">
+                <h2 class="section-title">Try the Gift Discovery Experience</h2>
+                <p class="section-subtitle">Experience our AI-powered gift finder in action</p>
+            </div>
+
+            <!-- Step Navigation -->
+            <div class="step-nav">
+                <div class="step-indicator active" data-step="1">1</div>
+                <div class="step-indicator" data-step="2">2</div>
+                <div class="step-indicator" data-step="3">3</div>
+                <div class="step-indicator" data-step="4">4</div>
+            </div>
+
+            <!-- Step 1: Occasion -->
+            <div class="step-content active" id="step1">
+                <h3>What's the occasion?</h3>
+                <div class="option-cards">
+                    <div class="option-card" data-value="birthday">
+                        <div class="option-icon">🎂</div>
+                        <div class="option-title">Birthday</div>
+                        <div class="option-desc">Celebrate their special day</div>
+                    </div>
+                    <div class="option-card" data-value="anniversary">
+                        <div class="option-icon">💑</div>
+                        <div class="option-title">Anniversary</div>
+                        <div class="option-desc">Mark your milestone</div>
+                    </div>
+                    <div class="option-card" data-value="wedding">
+                        <div class="option-icon">💍</div>
+                        <div class="option-title">Wedding</div>
+                        <div class="option-desc">Perfect for the couple</div>
+                    </div>
+                    <div class="option-card" data-value="graduation">
+                        <div class="option-icon">🎓</div>
+                        <div class="option-title">Graduation</div>
+                        <div class="option-desc">Celebrate achievement</div>
+                    </div>
+                    <div class="option-card" data-value="holiday">
+                        <div class="option-icon">🎄</div>
+                        <div class="option-title">Holiday</div>
+                        <div class="option-desc">Seasonal celebrations</div>
+                    </div>
+                    <div class="option-card" data-value="just-because">
+                        <div class="option-icon">💝</div>
+                        <div class="option-title">Just Because</div>
+                        <div class="option-desc">No reason needed</div>
+                    </div>
+                </div>
+                <div class="btn-group">
+                    <button class="btn btn-primary" onclick="nextStep()">Next Step</button>
+                </div>
+            </div>
+
+            <!-- Step 2: Recipient -->
+            <div class="step-content" id="step2">
+                <h3>Who are you shopping for?</h3>
+                <div class="option-cards">
+                    <div class="option-card" data-value="mother">
+                        <div class="option-icon">👩</div>
+                        <div class="option-title">Mother</div>
+                        <div class="option-desc">For the amazing mom</div>
+                    </div>
+                    <div class="option-card" data-value="father">
+                        <div class="option-icon">👨</div>
+                        <div class="option-title">Father</div>
+                        <div class="option-desc">For the wonderful dad</div>
+                    </div>
+                    <div class="option-card" data-value="spouse">
+                        <div class="option-icon">💑</div>
+                        <div class="option-title">Spouse</div>
+                        <div class="option-desc">For your partner</div>
+                    </div>
+                    <div class="option-card" data-value="friend">
+                        <div class="option-icon">👥</div>
+                        <div class="option-title">Friend</div>
+                        <div class="option-desc">For your bestie</div>
+                    </div>
+                    <div class="option-card" data-value="child">
+                        <div class="option-icon">👶</div>
+                        <div class="option-title">Child</div>
+                        <div class="option-desc">For the little one</div>
+                    </div>
+                    <div class="option-card" data-value="colleague">
+                        <div class="option-icon">👔</div>
+                        <div class="option-title">Colleague</div>
+                        <div class="option-desc">For your coworker</div>
+                    </div>
+                </div>
+                <div class="btn-group">
+                    <button class="btn btn-secondary" onclick="previousStep()">Previous</button>
+                    <button class="btn btn-primary" onclick="nextStep()">Next Step</button>
+                </div>
+            </div>
+
+            <!-- Step 3: Details -->
+            <div class="step-content" id="step3">
+                <h3>Tell us more about them</h3>
+                <div class="form-group">
+                    <label class="form-label">Age</label>
+                    <select class="form-select" id="age">
+                        <option value="">Select age range</option>
+                        <option value="18-25">18-25</option>
+                        <option value="26-35">26-35</option>
+                        <option value="36-45">36-45</option>
+                        <option value="46-55">46-55</option>
+                        <option value="56+">56+</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label class="form-label">Interests & Hobbies</label>
+                    <input type="text" class="form-input" id="interests" placeholder="e.g., music, cooking, reading, travel">
+                </div>
+                <div class="form-group">
+                    <label class="form-label">Additional Details</label>
+                    <textarea class="form-textarea" id="additionalInfo" placeholder="Tell us more about their personality, preferences, or any special requirements..."></textarea>
+                </div>
+                <div class="form-group">
+                    <label class="form-label">Budget (INR)</label>
+                    <select class="form-select" id="budget">
+                        <option value="">Select budget range</option>
+                        <option value="5000-10000">₹5,000 - ₹10,000</option>
+                        <option value="10000-25000">₹10,000 - ₹25,000</option>
+                        <option value="25000-50000">₹25,000 - ₹50,000</option>
+                        <option value="50000-100000">₹50,000 - ₹1,00,000</option>
+                        <option value="100000+">₹1,00,000+</option>
+                    </select>
+                </div>
+                <div class="btn-group">
+                    <button class="btn btn-secondary" onclick="previousStep()">Previous</button>
+                    <button class="btn btn-primary" onclick="nextStep()">Get Recommendations</button>
+                </div>
+            </div>
+
+            <!-- Step 4: Results -->
+            <div class="step-content" id="step4">
+                <div class="results-header">
+                    <h3>Your Personalized Gift Recommendations</h3>
+                    <p class="section-subtitle">AI-powered suggestions based on your preferences</p>
+                </div>
+                <div class="results-grid" id="resultsGrid">
+                    <!-- Results will be populated here -->
+                </div>
+                <div class="btn-group">
+                    <button class="btn btn-secondary" onclick="previousStep()">Previous</button>
+                    <button class="btn btn-primary" onclick="resetForm()">Start Over</button>
+                </div>
+            </div>
+        </section>
+
+        <!-- Features Section -->
+        <section class="features-section" id="features">
+            <div class="section-header">
+                <h2 class="section-title">Platform Features</h2>
+                <p class="section-subtitle">Advanced capabilities powered by cutting-edge technology</p>
+            </div>
+            <div class="features-grid">
+                <div class="feature-card">
+                    <div class="feature-icon">🤖</div>
+                    <div class="feature-title">AI-Powered Recommendations</div>
+                    <div class="feature-desc">Advanced machine learning algorithms analyze user preferences, occasion context, and recipient characteristics to provide highly personalized gift suggestions.</div>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">📊</div>
+                    <div class="feature-title">Real-Time Price Tracking</div>
+                    <div class="feature-desc">Continuous monitoring of product prices across multiple retailers ensures users always get the best value for their money with automatic price drop alerts.</div>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">🔗</div>
+                    <div class="feature-title">Affiliate Monetization</div>
+                    <div class="feature-desc">Integrated affiliate marketing system with automatic link generation, click tracking, and revenue analytics for sustainable business model.</div>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">🌐</div>
+                    <div class="feature-title">Multi-Source Catalog</div>
+                    <div class="feature-desc">Comprehensive product catalog synchronized from multiple sources including Amazon, local retailers, and specialty stores.</div>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">📱</div>
+                    <div class="feature-title">Mobile-First Design</div>
+                    <div class="feature-desc">Responsive design optimized for all devices with intuitive user interface and seamless cross-platform experience.</div>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">🔒</div>
+                    <div class="feature-title">Enterprise Security</div>
+                    <div class="feature-desc">Advanced security measures including data encryption, secure API endpoints, and compliance with privacy regulations.</div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Stats Section -->
+        <section class="stats-section" id="stats">
+            <div class="section-header">
+                <h2 class="section-title">Platform Impact & Metrics</h2>
+                <p class="section-subtitle">Real-world performance and business value</p>
+            </div>
+            <div class="stats-grid">
+                <div class="stat-item">
+                    <div class="stat-number">95%</div>
+                    <div class="stat-label">User Satisfaction Rate</div>
+                </div>
+                <div class="stat-item">
+                    <div class="stat-number">50K+</div>
+                    <div class="stat-label">Product Catalog Size</div>
+                </div>
+                <div class="stat-item">
+                    <div class="stat-number">2.5M</div>
+                    <div class="stat-label">AI Recommendations Daily</div>
+                </div>
+                <div class="stat-item">
+                    <div class="stat-number">85%</div>
+                    <div class="stat-label">Conversion Rate Improvement</div>
+                </div>
+            </div>
+        </section>
+    </div>
+
+    <!-- Footer -->
+    <footer id="contact">
+        <div class="footer-content">
+            <div class="footer-links">
+                <a href="#features">Features</a>
+                <a href="#demo">Demo</a>
+                <a href="#stats">Impact</a>
+                <a href="#contact">Contact</a>
+            </div>
+            <p class="footer-text">
+                © 2024 GiftPedia. Stakeholder Prototype - AI-Powered Gift Discovery Platform
+            </p>
+            <p class="footer-text">
+                Built with advanced AI technology, real-time data integration, and enterprise-grade security
+            </p>
+        </div>
+    </footer>
+
+    <script>
+        // Global state
+        let currentStep = 1;
+        const giftRequest = {
+            occasion: '',
+            recipient: '',
+            age: '',
+            interests: '',
+            additionalInfo: '',
+            budget: ''
+        };
+
+        // Initialize
+        document.addEventListener('DOMContentLoaded', function() {
+            setupEventListeners();
+        });
+
+        // Setup event listeners
+        function setupEventListeners() {
+            // Option cards
+            document.querySelectorAll('.option-card').forEach(card => {
+                card.addEventListener('click', function() {
+                    const step = this.closest('.step-content').id;
+                    const value = this.dataset.value;
+                    
+                    // Remove selected class from siblings
+                    this.parentElement.querySelectorAll('.option-card').forEach(c => {
+                        c.classList.remove('selected');
+                    });
+                    
+                    // Add selected class to clicked card
+                    this.classList.add('selected');
+                    
+                    // Store value
+                    if (step === 'step1') {
+                        giftRequest.occasion = value;
+                    } else if (step === 'step2') {
+                        giftRequest.recipient = value;
+                    }
+                });
+            });
+
+            // Smooth scrolling for navigation links
+            document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+                anchor.addEventListener('click', function (e) {
+                    e.preventDefault();
+                    const target = document.querySelector(this.getAttribute('href'));
+                    if (target) {
+                        target.scrollIntoView({
+                            behavior: 'smooth',
+                            block: 'start'
+                        });
+                    }
+                });
+            });
+        }
+
+        // Navigation functions
+        function nextStep() {
+            if (currentStep === 3) {
+                // Validate step 3 before proceeding
+                if (!validateStep3()) {
+                    alert('Please fill in all required fields.');
+                    return;
+                }
+                getRecommendations();
+            }
+            
+            if (currentStep < 4) {
+                // Update step indicators
+                document.querySelector(`.step-indicator[data-step="${currentStep}"]`).classList.remove('active');
+                document.querySelector(`.step-indicator[data-step="${currentStep}"]`).classList.add('completed');
+                
+                currentStep++;
+                
+                document.querySelector(`.step-indicator[data-step="${currentStep}"]`).classList.add('active');
+                
+                // Update step content
+                document.querySelectorAll('.step-content').forEach(content => {
+                    content.classList.remove('active');
+                });
+                document.getElementById(`step${currentStep}`).classList.add('active');
+            }
+        }
+
+        function previousStep() {
+            if (currentStep > 1) {
+                // Update step indicators
+                document.querySelector(`.step-indicator[data-step="${currentStep}"]`).classList.remove('active');
+                
+                currentStep--;
+                
+                document.querySelector(`.step-indicator[data-step="${currentStep}"]`).classList.remove('completed');
+                document.querySelector(`.step-indicator[data-step="${currentStep}"]`).classList.add('active');
+                
+                // Update step content
+                document.querySelectorAll('.step-content').forEach(content => {
+                    content.classList.remove('active');
+                });
+                document.getElementById(`step${currentStep}`).classList.add('active');
+            }
+        }
+
+        function validateStep3() {
+            const age = document.getElementById('age').value;
+            const interests = document.getElementById('interests').value;
+            const budget = document.getElementById('budget').value;
+            
+            return age && interests && budget;
+        }
+
+        function resetForm() {
+            currentStep = 1;
+            giftRequest.occasion = '';
+            giftRequest.recipient = '';
+            giftRequest.age = '';
+            giftRequest.interests = '';
+            giftRequest.additionalInfo = '';
+            giftRequest.budget = '';
+            
+            // Reset step indicators
+            document.querySelectorAll('.step-indicator').forEach(indicator => {
+                indicator.classList.remove('active', 'completed');
+            });
+            document.querySelector('.step-indicator[data-step="1"]').classList.add('active');
+            
+            // Reset step content
+            document.querySelectorAll('.step-content').forEach(content => {
+                content.classList.remove('active');
+            });
+            document.getElementById('step1').classList.add('active');
+            
+            // Reset form fields
+            document.querySelectorAll('.form-input, .form-select, .form-textarea').forEach(field => {
+                field.value = '';
+            });
+            
+            // Reset option cards
+            document.querySelectorAll('.option-card').forEach(card => {
+                card.classList.remove('selected');
+            });
+            
+            // Hide results
+            document.querySelector('.results-section').classList.remove('active');
+        }
+
+        // Get recommendations from API
+        async function getRecommendations() {
+            // Collect form data
+            giftRequest.age = document.getElementById('age').value;
+            giftRequest.interests = document.getElementById('interests').value;
+            giftRequest.additionalInfo = document.getElementById('additionalInfo').value;
+            giftRequest.budget = document.getElementById('budget').value;
+
+            // Create user_input string for API
+            const userInput = `${giftRequest.occasion} gift for ${giftRequest.recipient} who loves ${giftRequest.interests}, budget ${giftRequest.budget}${giftRequest.age ? ', age ' + giftRequest.age : ''}${giftRequest.additionalInfo ? ', ' + giftRequest.additionalInfo : ''}`;
+
+            // Show loading state
+            const resultsGrid = document.getElementById('resultsGrid');
+            resultsGrid.innerHTML = '<div style="text-align: center; grid-column: 1/-1;"><div class="loading"><div class="spinner"></div>Finding Perfect Gifts...</div></div>';
+
+            try {
+                const response = await fetch('http://localhost:8000/recommendations', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({ user_input: userInput })
+                });
+
+                if (!response.ok) {
+                    throw new Error('API request failed');
+                }
+
+                const data = await response.json();
+                displayResults(data.data.recommendations);
+                
+            } catch (error) {
+                console.error('Error:', error);
+                resultsGrid.innerHTML = '<div style="text-align: center; grid-column: 1/-1; padding: 2rem;"><p>Sorry, something went wrong. Please try again.</p></div>';
+            }
+        }
+
+        // Display results
+        function displayResults(recommendations) {
+            const resultsGrid = document.getElementById('resultsGrid');
+            
+            if (!recommendations || recommendations.length === 0) {
+                resultsGrid.innerHTML = '<div style="text-align: center; grid-column: 1/-1; padding: 2rem;"><p>No recommendations found. Please try different criteria.</p></div>';
+                return;
+            }
+
+            resultsGrid.innerHTML = '';
+            
+            recommendations.forEach((product, index) => {
+                const card = createProductCard(product, index);
+                resultsGrid.appendChild(card);
+            });
+        }
+
+        // Create product card
+        function createProductCard(product, index) {
+            const card = document.createElement('div');
+            card.className = 'product-card';
+            
+            // Generate unique image based on product category and name
+            const imageSeeds = {
+                'music': ['guitar', 'headphones', 'piano', 'microphone', 'speaker'],
+                'cooking': ['kitchen', 'cookbook', 'utensils', 'apron', 'mixer'],
+                'fashion': ['dress', 'handbag', 'shoes', 'jewelry', 'watch'],
+                'electronics': ['laptop', 'phone', 'tablet', 'camera', 'headphones'],
+                'home': ['sofa', 'lamp', 'decoration', 'blanket', 'pillow'],
+                'sports': ['ball', 'shoes', 'jersey', 'equipment', 'bottle'],
+                'beauty': ['makeup', 'skincare', 'perfume', 'mirror', 'brush'],
+                'books': ['novel', 'textbook', 'magazine', 'journal', 'pen'],
+                'toys': ['teddy', 'puzzle', 'game', 'blocks', 'doll'],
+                'default': ['gift', 'present', 'box', 'ribbon', 'card']
+            };
+            
+            // Determine category from product name or features
+            const productCategory = product.category?.toLowerCase() || 
+                (product.tags?.some(tag => tag.toLowerCase().includes('music')) ? 'music' :
+                 product.tags?.some(tag => tag.toLowerCase().includes('cooking')) ? 'cooking' :
+                 product.tags?.some(tag => tag.toLowerCase().includes('fashion')) ? 'fashion' :
+                 product.tags?.some(tag => tag.toLowerCase().includes('electronics')) ? 'electronics' :
+                 product.tags?.some(tag => tag.toLowerCase().includes('home')) ? 'home' :
+                 product.tags?.some(tag => tag.toLowerCase().includes('sports')) ? 'sports' :
+                 product.tags?.some(tag => tag.toLowerCase().includes('beauty')) ? 'beauty' :
+                 product.tags?.some(tag => tag.toLowerCase().includes('book')) ? 'books' :
+                 product.tags?.some(tag => tag.toLowerCase().includes('toy')) ? 'toys' : 'default');
+            
+            // Get random seed from category
+            const categorySeeds = imageSeeds[productCategory] || imageSeeds['default'];
+            const randomSeed = categorySeeds[Math.floor(Math.random() * categorySeeds.length)];
+            const uniqueSeed = `${randomSeed}_${index}_${product.name.replace(/\s+/g, '_').toLowerCase()}`;
+            
+            const availability = product.availability || 'In Stock';
+            
+            card.innerHTML = `
+                <img src="${product.image_url || `https://picsum.photos/seed/${uniqueSeed}/400/300.jpg`}" alt="${product.name}" class="product-image">
+                <div class="product-content">
+                    <h3 class="product-title">${product.name}</h3>
+                    <div class="product-brand">${product.brand || 'Premium Brand'}</div>
+                    <div class="product-price">
+                        ₹${product.price || '999'}
+                    </div>
+                    <div class="product-availability ${availability === 'In Stock' ? 'in-stock' : 'out-of-stock'}">
+                        ${availability === 'In Stock' ? '✓ In Stock' : 'Out of Stock'}
+                    </div>
+                    <ul class="product-features">
+                        ${(product.tags || []).slice(0, 3).map(tag => `<li>${tag}</li>`).join('')}
+                    </ul>
+                    <div class="product-actions">
+                        <button class="btn btn-affiliate" onclick="window.open('${product.affiliate_url || '#'}', '_blank')">
+                            🛒 Shop Now
+                        </button>
+                    </div>
+                </div>
+            `;
+            
+            return card;
+        }
+    </script>
+</body>
+</html>

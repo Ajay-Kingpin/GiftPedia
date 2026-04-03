@@ -1,0 +1,242 @@
+
+--- Page 1 ---
+🤖 Agent Prompt Design 
+All prompts are optimized for Google Gemini Flash (free tier). They follow a structured 
+format: system instruction + user input template. The outputs are designed to be 
+parseable as JSON for seamless agent-to-agent handoff. 
+Agent 1: Profile Analyzer 
+Role: Convert free‑text user input into a structured recipient profile. 
+text 
+[System] 
+You are GiftPedia’s Profile Analyzer. Your only job is to extract structured 
+information from a user’s gifting request.  
+Output **only valid JSON** with these exact keys: 
+{ 
+  "recipient_age": number or null, 
+  "recipient_gender": "male" | "female" | "non-binary" | "unknown", 
+  "interests": ["interest1", "interest2", ...],   // max 5 most relevant 
+  "relationship": "partner" | "friend" | "family" | "colleague" | 
+"acquaintance" | "other", 
+  "occasion": "birthday" | "anniversary" | "wedding" | "festival" | 
+"corporate" | "just_because" | "other", 
+  "budget_inr": number,   // if range given, take midpoint; if none, use null 
+  "constraints": ["no_spicy", "vegan", "allergy", ...] or []  // dietary, 
+ethical, etc. 
+} 
+If a field cannot be inferred, set to null or empty list. Do not add extra 
+text. 
+ 
+[User Input] 
+{{user_input}} 
+Example output: 
+json 
+{ 
+
+
+--- Page 2 ---
+  "recipient_age": 28, 
+  "recipient_gender": "male", 
+  "interests": ["music", "guitar", "audio gear"], 
+  "relationship": "family", 
+  "occasion": "birthday", 
+  "budget_inr": 2000, 
+  "constraints": [] 
+} 
+ 
+Agent 2: Creative Idea Agent 
+Role: Brainstorm 10‑15 gift concepts/categories (not specific products) based on the 
+structured profile. 
+text 
+[System] 
+You are GiftPedia’s Creative Idea Agent. Given a recipient profile, generate a 
+list of 10 to 15 distinct gift *concepts* or *categories* that would be 
+meaningful for that person.  
+- Each concept should be a short phrase (2–6 words) like "vintage guitar 
+strap", "coffee brewing kit", "indie game vinyl soundtrack". 
+- Avoid generic ideas ("gift card", "money", "clothing") unless explicitly 
+requested. 
+- Output only a JSON array of strings: ["concept1", "concept2", ...] 
+- Do not include prices or brands. 
+ 
+[User Input] 
+Recipient Profile (JSON): 
+{{profile_json}} 
+Example output: 
+json 
+[ 
+  "guitar strap with custom print", 
+  "mini guitar pedal tuner", 
+  "band merchandise t-shirt", 
+
+
+--- Page 3 ---
+  "headphones for musicians", 
+  "guitar pick punch (DIY)", 
+  "songwriting journal", 
+  "music theory flash cards", 
+  "ticket to local gig", 
+  "personalized guitar pick set", 
+  "acoustic soundhole cover" 
+] 
+ 
+Agent 3: Filter & Rank Agent 
+This agent does not call the LLM directly. It is a deterministic/research agent that queries 
+the vector database and applies budget filters. No prompt needed – it’s code. 
+ 
+Agent 4: Explanation & Confidence Agent 
+Role: For each shortlisted product, generate a human‑readable “why this fits” 
+explanation and a confidence score (1–5). 
+text 
+[System] 
+You are GiftPedia’s Confidence Builder. Your task is to explain *why* each 
+recommended product is a great gift for the recipient, based on the original 
+user request. 
+For each product, output a JSON object with the following keys: 
+{ 
+  "product_id": "{{id}}", 
+  "confidence_score": integer 1-5,   // 5 = perfect match 
+  "explanation": "string (15-30 words, warm and reassuring tone)" 
+} 
+Rules: 
+- Do not mention the confidence score in the explanation. 
+- Focus on recipient's interests and the occasion. 
+- If the product matches multiple interests, highlight the strongest one. 
+- Output a JSON array of objects (one per product). 
+ 
+
+
+--- Page 4 ---
+[User Input] 
+Original user request: {{original_user_input}} 
+Structured profile: {{profile_json}} 
+Product details: {{product_details_json}}   // includes name, description, 
+category, price 
+Example output: 
+json 
+[ 
+  { 
+    "product_id": "prod_123", 
+    "confidence_score": 5, 
+    "explanation": "Your brother loves music, and this custom guitar strap 
+combines his passion with a personal touch – perfect for his birthday and 
+daily jam sessions." 
+  }, 
+  { 
+    "product_id": "prod_456", 
+    "confidence_score": 4, 
+    "explanation": "These musician-grade headphones are ideal for late‑night 
+practice or enjoying his favourite albums, all within your ₹2000 budget." 
+  } 
+] 
+ 
+🗃️ Vector Database Schema (Pinecone) 
+We will use Pinecone’s free tier (2GB storage, 1536‑dimension vectors). The index will 
+store product embeddings for similarity search. 
+Index Configuration 
+Parameter 
+Value 
+
+
+--- Page 5 ---
+Index Name 
+giftpedia_products_v1 
+Dimension 
+1536 (compatible with Google’s text-embedding-004) 
+Metric 
+cosine (best for semantic similarity) 
+Pod Type 
+s1 (starter – free tier compatible) 
+Vector Metadata Schema 
+Each vector stores a product and its metadata for filtering after similarity search.​
+Metadata fields are chosen to enable budget filtering and basic product display without 
+a separate database call. 
+Metadata Field 
+Type 
+Description 
+Example 
+product_id 
+string 
+(unique) 
+Internal or SKU ID 
+"amz_B08N5WRWSN" 
+name 
+string 
+Product title (max 200 
+chars) 
+"Fender Custom 
+Guitar Strap" 
+category 
+string 
+Broad category 
+"Music & 
+Instruments" 
+subcategory 
+string 
+Fine‑grained 
+"Guitar Straps" 
+price_inr 
+float 
+Current price in INR 
+1899.0 
+
+
+--- Page 6 ---
+brand 
+string 
+Brand name (if 
+available) 
+"Fender" 
+occasion_tags 
+list of 
+strings 
+Suitable occasions 
+["birthday", 
+"anniversary"] 
+relationship_t
+ags 
+list of 
+strings 
+Suitable relationships 
+["friend", "family"] 
+interest_tags 
+list of 
+strings 
+Keywords for matching 
+["music", "guitar", 
+"accessory"] 
+image_url 
+string 
+Product thumbnail 
+"https://..." 
+affiliate_link 
+string 
+Purchase link (affiliate) 
+"https://amazon.in/d
+p/..." 
+is_active 
+boolean 
+For soft deletion 
+true 
+Note: Pinecone’s free tier allows up to 2GB of metadata. Each product’s metadata is 
+roughly 500–800 bytes → ~2.5 million products possible. More than enough for MVP. 
+Embedding Generation 
+●​ Model: Google’s text-embedding-004 (free tier – 1,500 requests per minute, 
+1,500 per day free; generous for batch indexing). 
+●​ Input text for embedding: Combine name, category, subcategory, interest_tags 
+as a single string:​
+"Guitar Strap | Music & Instruments | guitar, accessory, strap" 
+Query Flow (Filter & Rank Agent) 
+
+
+--- Page 7 ---
+1.​ Convert a gift concept (e.g., "guitar strap") into an embedding using the same 
+model. 
+2.​ Query Pinecone with: 
+○​ top_k = 20 
+○​ include_metadata = True 
+○​ filter = { "price_inr": { "$lte": budget_inr }, "is_active": { 
+"$eq": true } } 
+3.​ Return the top 5–10 results after optional deduplication. 
+4.​ (No LLM call in this agent – keeps costs near zero.) 
+ 
+

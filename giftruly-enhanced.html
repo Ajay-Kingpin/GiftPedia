@@ -1,0 +1,623 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>GiftPedia - AI-Powered Gift Finder</title>
+    <meta name="description" content="Find perfect gifts with our AI-powered gift finder. Personalized recommendations for every occasion.">
+    <link rel="stylesheet" href="frontend/src/styles/giftruly-style.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+    <!-- Navigation -->
+    <nav class="navbar">
+        <div class="navbar-content">
+            <a href="/" class="logo">
+                🎁 GiftPedia
+            </a>
+            <div class="nav-links">
+                <a href="#gift-finder" class="nav-link active">Gift Finder</a>
+                <a href="#articles" class="nav-link">Articles</a>
+                <a href="#about" class="nav-link">About</a>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section class="hero">
+        <div class="container">
+            <h1>Let GiftPedia Find Perfect Gifts</h1>
+            <p>
+                Find gifts that truly matter for every occasion with our AI-Powered Gift Finder
+            </p>
+            <div class="text-center">
+                <a href="#gift-finder" class="btn btn-primary btn-large">
+                    🎁 Find a Gift Now
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <!-- Gift Finder Section -->
+    <section id="gift-finder" class="container">
+        <div class="gift-finder">
+            <h2>AI-Powered Gift Finder</h2>
+            
+            <!-- Step Navigation -->
+            <div class="step-nav">
+                <button class="step-btn active" onclick="showStep(1)">
+                    <span>🎉</span>
+                    Choose Occasion
+                </button>
+                <button class="step-btn" onclick="showStep(2)">
+                    <span>👥</span>
+                    Select Recipient
+                </button>
+                <button class="step-btn" onclick="showStep(3)">
+                    <span>📝</span>
+                    Add Details
+                </button>
+                <button class="step-btn" onclick="showStep(4)">
+                    <span>💰</span>
+                    Set Budget
+                </button>
+            </div>
+
+            <!-- Step 1: Occasion -->
+            <div id="step1" class="form-section active">
+                <h3>What are you celebrating?</h3>
+                <p class="mb-2">Choose the occasion to find the perfect gift.</p>
+                <div class="option-cards">
+                    <div class="option-card" onclick="selectOccasion('birthday')">
+                        <span class="option-icon">🎂</span>
+                        <div class="option-title">Birthday</div>
+                        <div class="option-description">Celebrate their special day</div>
+                    </div>
+                    <div class="option-card" onclick="selectOccasion('anniversary')">
+                        <span class="option-icon">💑</span>
+                        <div class="option-title">Anniversary</div>
+                        <div class="option-description">Mark your love story</div>
+                    </div>
+                    <div class="option-card" onclick="selectOccasion('valentines')">
+                        <span class="option-icon">💝</span>
+                        <div class="option-title">Valentine's Day</div>
+                        <div class="option-description">Show your love</div>
+                    </div>
+                    <div class="option-card" onclick="selectOccasion('christmas')">
+                        <span class="option-icon">🎄</span>
+                        <div class="option-title">Christmas</div>
+                        <div class="option-description">Holiday magic</div>
+                    </div>
+                    <div class="option-card" onclick="selectOccasion('wedding')">
+                        <span class="option-icon">💒</span>
+                        <div class="option-title">Wedding</div>
+                        <div class="option-description">Celebrate new beginnings</div>
+                    </div>
+                    <div class="option-card" onclick="selectOccasion('graduation')">
+                        <span class="option-icon">🎓</span>
+                        <div class="option-title">Graduation</div>
+                        <div class="option-description">Mark their achievement</div>
+                    </div>
+                    <div class="option-card" onclick="selectOccasion('mothers-day')">
+                        <span class="option-icon">🌸</span>
+                        <div class="option-title">Mother's Day</div>
+                        <div class="option-description">Honor mom</div>
+                    </div>
+                    <div class="option-card" onclick="selectOccasion('fathers-day')">
+                        <span class="option-icon">👔</span>
+                        <div class="option-title">Father's Day</div>
+                        <div class="option-description">Celebrate dad</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Step 2: Recipient -->
+            <div id="step2" class="form-section">
+                <h3>Who is this gift for?</h3>
+                <p class="mb-2">Select your relationship to the recipient.</p>
+                <div class="option-cards">
+                    <div class="option-card" onclick="selectRecipient('mother')">
+                        <span class="option-icon">👩</span>
+                        <div class="option-title">Mother</div>
+                        <div class="option-description">For the woman who raised you</div>
+                    </div>
+                    <div class="option-card" onclick="selectRecipient('father')">
+                        <span class="option-icon">👨</span>
+                        <div class="option-title">Father</div>
+                        <div class="option-description">For the man who guided you</div>
+                    </div>
+                    <div class="option-card" onclick="selectRecipient('sister')">
+                        <span class="option-icon">👧</span>
+                        <div class="option-title">Sister</div>
+                        <div class="option-description">For your sister</div>
+                    </div>
+                    <div class="option-card" onclick="selectRecipient('brother')">
+                        <span class="option-icon">👦</span>
+                        <div class="option-title">Brother</div>
+                        <div class="option-description">For your brother</div>
+                    </div>
+                    <div class="option-card" onclick="selectRecipient('girlfriend')">
+                        <span class="option-icon">💑</span>
+                        <div class="option-title">Girlfriend</div>
+                        <div class="option-description">For your partner</div>
+                    </div>
+                    <div class="option-card" onclick="selectRecipient('boyfriend')">
+                        <span class="option-icon">💑</span>
+                        <div class="option-title">Boyfriend</div>
+                        <div class="option-description">For your partner</div>
+                    </div>
+                    <div class="option-card" onclick="selectRecipient('friend')">
+                        <span class="option-icon">👫</span>
+                        <div class="option-title">Friend</div>
+                        <div class="option-description">For your friend</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Step 3: Details -->
+            <div id="step3" class="form-section">
+                <h3>Tell us more about them</h3>
+                <p class="mb-2">Help us find the perfect gift with more details.</p>
+                <div class="form-group">
+                    <label class="form-label">Age (optional)</label>
+                    <input type="text" class="form-input" id="age" placeholder="e.g., 25 years old">
+                </div>
+                <div class="form-group">
+                    <label class="form-label">Interests & Hobbies *</label>
+                    <textarea class="form-textarea" id="interests" placeholder="e.g., loves music, enjoys cooking, likes hiking, tech enthusiast..." required></textarea>
+                </div>
+                <div class="form-group">
+                    <label class="form-label">Additional Information (optional)</label>
+                    <textarea class="form-textarea" id="additionalInfo" placeholder="Any other details that might help us find the perfect gift..."></textarea>
+                </div>
+                <div class="text-center">
+                    <button class="btn btn-secondary" onclick="showStep(4)">
+                        Continue to Budget
+                    </button>
+                </div>
+            </div>
+
+            <!-- Step 4: Budget -->
+            <div id="step4" class="form-section">
+                <h3>What's your budget?</h3>
+                <p class="mb-2">Set your price range for better recommendations.</p>
+                <div class="form-group">
+                    <label class="form-label">Budget Range *</label>
+                    <select class="form-select" id="budget" required>
+                        <option value="">Select budget range</option>
+                        <option value="0-5000">Under ₹5,000</option>
+                        <option value="5000-10000">₹5,000 - ₹10,000</option>
+                        <option value="10000-20000">₹10,000 - ₹20,000</option>
+                        <option value="20000-50000">₹20,000 - ₹50,000</option>
+                        <option value="50000-100000">₹50,000 - ₹1,00,000</option>
+                        <option value="100000+">Over ₹1,00,000</option>
+                    </select>
+                </div>
+                <div class="text-center">
+                    <button class="btn btn-primary btn-large" onclick="getRecommendations()">
+                        <span id="submitBtn">🎁 Find Perfect Gifts</span>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Features Section -->
+    <section class="container mt-3">
+        <div class="text-center mb-2">
+            <h2>Why Choose GiftPedia?</h2>
+        </div>
+        <div class="option-cards">
+            <div class="option-card">
+                <span class="option-icon">🤖</span>
+                <div class="option-title">AI-Powered</div>
+                <div class="option-description">Cutting edge 4-agent AI system for perfect recommendations</div>
+            </div>
+            <div class="option-card">
+                <span class="option-icon">💰</span>
+                <div class="option-title">100% Free</div>
+                <div class="option-description">No hidden fees, no premium features, no account required</div>
+            </div>
+            <div class="option-card">
+                <span class="option-icon">📊</span>
+                <div class="option-title">Real-time Pricing</div>
+                <div class="option-description">Live prices from Amazon and other retailers</div>
+            </div>
+            <div class="option-card">
+                <span class="option-icon">🎯</span>
+                <div class="option-title">Personalized</div>
+                <div class="option-description">Gift suggestions tailored to your specific needs</div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Results Section (Hidden by default) -->
+    <section id="results" class="container results-section" style="display: none;">
+        <div class="results-header">
+            <h2>🎁 Perfect Gift Recommendations</h2>
+            <p>Based on your preferences, here are our top suggestions:</p>
+        </div>
+        <div id="resultsGrid" class="results-grid">
+            <!-- Results will be populated here -->
+        </div>
+        <div class="text-center mt-3">
+            <button class="btn btn-secondary" onclick="resetForm()">
+                🔙 Start Over
+            </button>
+        </div>
+    </section>
+
+    <!-- Articles Section -->
+    <section id="articles" class="articles-section">
+        <div class="container">
+            <div class="articles-header">
+                <h2>Browse Gift Guides & Articles</h2>
+                <p>Expert advice and curated gift ideas for every occasion</p>
+            </div>
+            <div class="articles-grid">
+                <article class="article-card">
+                    <img src="https://picsum.photos/seed/article1/400/300.jpg" alt="Gift Guide" class="article-image">
+                    <div class="article-content">
+                        <h3 class="article-title">10 Gifts for Music Lovers</h3>
+                        <p class="article-excerpt">Perfect gift ideas for the music enthusiast in your life, from headphones to instruments.</p>
+                        <div class="article-meta">
+                            <span>🎁 Gift Guides</span>
+                            <span>5 min read</span>
+                        </div>
+                    </div>
+                </article>
+                <article class="article-card">
+                    <img src="https://picsum.photos/seed/article2/400/300.jpg" alt="Gift Guide" class="article-image">
+                    <div class="article-content">
+                        <h3 class="article-title">Tech Gifts Under $100</h3>
+                        <p class="article-excerpt">Amazing tech gadgets that won't break the bank but will impress anyone.</p>
+                        <div class="article-meta">
+                            <span>💻 Technology</span>
+                            <span>3 min read</span>
+                        </div>
+                    </div>
+                </article>
+                <article class="article-card">
+                    <img src="https://picsum.photos/seed/article3/400/300.jpg" alt="Gift Guide" class="article-image">
+                    <div class="article-content">
+                        <h3 class="article-title">DIY Gift Ideas</h3>
+                        <p class="article-excerpt">Personalized handmade gifts that show you really care.</p>
+                        <div class="article-meta">
+                            <span>🎨 Creative</span>
+                            <span>7 min read</span>
+                        </div>
+                    </div>
+                </article>
+                <article class="article-card">
+                    <img src="https://picsum.photos/seed/article4/400/300.jpg" alt="Gift Guide" class="article-image">
+                    <div class="article-content">
+                        <h3 class="article-title">Last-Minute Gift Solutions</h3>
+                        <p class="article-excerpt">Great gift ideas when you're running out of time.</p>
+                        <div class="article-meta">
+                            <span>⏰ Quick Tips</span>
+                            <span>4 min read</span>
+                        </div>
+                    </div>
+                </article>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="footer-content">
+            <div class="footer-section">
+                <h4>GiftPedia</h4>
+                <ul class="footer-links">
+                    <li><a href="#about">About Us</a></li>
+                    <li><a href="#how-it-works">How It Works</a></li>
+                    <li><a href="#privacy">Privacy Policy</a></li>
+                    <li><a href="#terms">Terms of Service</a></li>
+                </ul>
+            </div>
+            <div class="footer-section">
+                <h4>Gift Finder</h4>
+                <ul class="footer-links">
+                    <li><a href="#birthday">Birthday Gifts</a></li>
+                    <li><a href="#anniversary">Anniversary Gifts</a></li>
+                    <li><a href="#christmas">Christmas Gifts</a></li>
+                    <li><a href="#valentines">Valentine's Gifts</a></li>
+                </ul>
+            </div>
+            <div class="footer-section">
+                <h4>Categories</h4>
+                <ul class="footer-links">
+                    <li><a href="#electronics">Electronics</a></li>
+                    <li><a href="#fashion">Fashion</a></li>
+                    <li><a href="#home">Home & Kitchen</a></li>
+                    <li><a href="#sports">Sports & Outdoors</a></li>
+                </ul>
+            </div>
+            <div class="footer-section">
+                <h4>Connect</h4>
+                <ul class="footer-links">
+                    <li><a href="#contact">Contact Us</a></li>
+                    <li><a href="#blog">Blog</a></li>
+                    <li><a href="#app">Mobile App</a></li>
+                    <li><a href="#api">API</a></li>
+                </ul>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <p>&copy; 2024 GiftPedia. All rights reserved. Made with ❤️ for better gift-giving.</p>
+        </div>
+    </footer>
+
+    <script>
+        // Global state
+        let giftRequest = {
+            occasion: '',
+            recipient: '',
+            age: '',
+            interests: '',
+            budget: '',
+            additionalInfo: ''
+        };
+
+        let currentStep = 1;
+
+        // Step navigation
+        function showStep(stepNumber) {
+            // Hide all steps
+            document.querySelectorAll('.form-section').forEach(section => {
+                section.classList.remove('active');
+            });
+            
+            // Remove active class from all step buttons
+            document.querySelectorAll('.step-btn').forEach(btn => {
+                btn.classList.remove('active');
+            });
+            
+            // Show selected step
+            document.getElementById(`step${stepNumber}`).classList.add('active');
+            
+            // Add active class to selected step button
+            document.querySelectorAll('.step-btn')[stepNumber - 1].classList.add('active');
+            
+            currentStep = stepNumber;
+        }
+
+        // Handle occasion selection
+        function selectOccasion(occasion) {
+            giftRequest.occasion = occasion;
+            
+            // Add selected class to the card
+            document.querySelectorAll('#step1 .option-card').forEach(card => {
+                card.classList.remove('selected');
+            });
+            event.target.closest('.option-card').classList.add('selected');
+            
+            // Auto-advance to next step after a short delay
+            setTimeout(() => showStep(2), 300);
+        }
+
+        // Handle recipient selection
+        function selectRecipient(recipient) {
+            giftRequest.recipient = recipient;
+            
+            // Add selected class to the card
+            document.querySelectorAll('#step2 .option-card').forEach(card => {
+                card.classList.remove('selected');
+            });
+            event.target.closest('.option-card').classList.add('selected');
+            
+            // Auto-advance to next step after a short delay
+            setTimeout(() => showStep(3), 300);
+        }
+
+        // Get recommendations from API
+        async function getRecommendations() {
+            // Collect form data
+            giftRequest.age = document.getElementById('age').value;
+            giftRequest.interests = document.getElementById('interests').value;
+            giftRequest.additionalInfo = document.getElementById('additionalInfo').value;
+            giftRequest.budget = document.getElementById('budget').value;
+
+            // Validate required fields
+            if (!giftRequest.occasion || !giftRequest.recipient || !giftRequest.interests || !giftRequest.budget) {
+                alert('Please fill in all required fields.');
+                return;
+            }
+
+            // Create user_input string for API
+            const userInput = `${giftRequest.occasion} gift for ${giftRequest.recipient} who loves ${giftRequest.interests}, budget ${giftRequest.budget}${giftRequest.age ? ', age ' + giftRequest.age : ''}${giftRequest.additionalInfo ? ', ' + giftRequest.additionalInfo : ''}`;
+
+            // Show loading state
+            const submitBtn = document.getElementById('submitBtn');
+            submitBtn.innerHTML = '<div class="loading"><div class="spinner"></div>Finding Perfect Gifts...</div>';
+
+            try {
+                const response = await fetch('http://localhost:8000/recommendations', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({ user_input: userInput })
+                });
+
+                if (!response.ok) {
+                    throw new Error('API request failed');
+                }
+
+                const data = await response.json();
+                displayResults(data.data.recommendations);
+                
+            } catch (error) {
+                console.error('Error:', error);
+                alert('Sorry, something went wrong. Please try again.');
+            } finally {
+                submitBtn.innerHTML = '🎁 Find Perfect Gifts';
+            }
+        }
+
+        // Display results
+        function displayResults(recommendations) {
+            const resultsGrid = document.getElementById('resultsGrid');
+            resultsGrid.innerHTML = '';
+
+            recommendations.forEach((product, index) => {
+                const productCard = createProductCard(product, index);
+                resultsGrid.appendChild(productCard);
+            });
+
+            // Show results section, hide gift finder
+            document.getElementById('gift-finder').style.display = 'none';
+            document.getElementById('results').style.display = 'block';
+            
+            // Scroll to results
+            document.getElementById('results').scrollIntoView({ behavior: 'smooth' });
+        }
+
+        // Create product card
+        function createProductCard(product, index) {
+            const card = document.createElement('div');
+            card.className = 'product-card';
+            
+            const priceDrop = product.price_info?.price_drop_percentage;
+            const availability = product.availability || 'In Stock';
+            
+            // Generate unique image based on product category and name
+            const imageSeeds = {
+                'music': ['guitar', 'headphones', 'piano', 'microphone', 'speaker'],
+                'cooking': ['kitchen', 'cookbook', 'utensils', 'apron', 'mixer'],
+                'fashion': ['dress', 'handbag', 'shoes', 'jewelry', 'watch'],
+                'electronics': ['laptop', 'phone', 'tablet', 'camera', 'headphones'],
+                'home': ['sofa', 'lamp', 'decoration', 'blanket', 'pillow'],
+                'sports': ['ball', 'shoes', 'jersey', 'equipment', 'bottle'],
+                'beauty': ['makeup', 'skincare', 'perfume', 'mirror', 'brush'],
+                'books': ['novel', 'textbook', 'magazine', 'journal', 'pen'],
+                'toys': ['teddy', 'puzzle', 'game', 'blocks', 'doll'],
+                'default': ['gift', 'present', 'box', 'ribbon', 'card']
+            };
+            
+            // Determine category from product name or features
+            const productCategory = product.category?.toLowerCase() || 
+                (product.features?.some(f => f.toLowerCase().includes('music')) ? 'music' :
+                 product.features?.some(f => f.toLowerCase().includes('cooking')) ? 'cooking' :
+                 product.features?.some(f => f.toLowerCase().includes('fashion')) ? 'fashion' :
+                 product.features?.some(f => f.toLowerCase().includes('electronics')) ? 'electronics' :
+                 product.features?.some(f => f.toLowerCase().includes('home')) ? 'home' :
+                 product.features?.some(f => f.toLowerCase().includes('sports')) ? 'sports' :
+                 product.features?.some(f => f.toLowerCase().includes('beauty')) ? 'beauty' :
+                 product.features?.some(f => f.toLowerCase().includes('book')) ? 'books' :
+                 product.features?.some(f => f.toLowerCase().includes('toy')) ? 'toys' : 'default');
+            
+            // Get random seed from category
+            const categorySeeds = imageSeeds[productCategory] || imageSeeds['default'];
+            const randomSeed = categorySeeds[Math.floor(Math.random() * categorySeeds.length)];
+            const uniqueSeed = `${randomSeed}_${index}_${product.name.replace(/\s+/g, '_').toLowerCase()}`;
+            
+            card.innerHTML = `
+                <img src="${product.image_url || `https://picsum.photos/seed/${uniqueSeed}/400/300.jpg`}" alt="${product.name}" class="product-image">
+                <div class="product-content">
+                    <h3 class="product-title">${product.name}</h3>
+                    <div class="product-brand">${product.brand || 'Premium Brand'}</div>
+                    <div class="product-price">
+                        ₹${product.price || '999'}
+                        ${product.original_price ? `<span class="original">₹${product.original_price}</span>` : ''}
+                    </div>
+                    <div class="product-availability ${availability === 'In Stock' ? 'in-stock' : 'out-of-stock'}">
+                        ${availability === 'In Stock' ? '✓ In Stock' : 'Out of Stock'}
+                    </div>
+                    ${priceDrop ? `<div class="price-drop">📉 ${priceDrop.toFixed(1)}% OFF</div>` : ''}
+                    <div class="product-features">
+                        ${(product.features || ['High Quality', 'Popular Choice', 'Great Value']).slice(0, 3).map(feature => 
+                            `<span class="feature-tag">${feature}</span>`
+                        ).join('')}
+                    </div>
+                    <div class="price-intelligence">
+                        <div class="price-trend ${product.price_info?.price_trend || 'stable'}">
+                            <span>${getTrendIcon(product.price_info?.price_trend)}</span>
+                            <span>Price is ${product.price_info?.price_trend || 'stable'}</span>
+                        </div>
+                        ${product.price_info?.last_updated ? `<small>Last updated: ${new Date(product.price_info.last_updated).toLocaleDateString()}</small>` : ''}
+                    </div>
+                    <div class="product-actions">
+                        <button class="btn btn-primary" onclick="viewDetails('${product.name}')">
+                            🛒 View Details
+                        </button>
+                        ${product.affiliate_url ? `
+                            <a href="${product.affiliate_url}" target="_blank" rel="noopener noreferrer" class="btn btn-success">
+                                💰 Shop Now
+                            </a>
+                        ` : ''}
+                    </div>
+                </div>
+            `;
+            
+            return card;
+        }
+
+        // Get trend icon
+        function getTrendIcon(trend) {
+            switch(trend) {
+                case 'up': return '📈';
+                case 'down': return '📉';
+                default: return '📊';
+            }
+        }
+
+        // View product details
+        function viewDetails(productName) {
+            alert(`Viewing details for: ${productName}`);
+            // This could open a modal or navigate to a detail page
+        }
+
+        // Reset form
+        function resetForm() {
+            giftRequest = {
+                occasion: '',
+                recipient: '',
+                age: '',
+                interests: '',
+                budget: '',
+                additionalInfo: ''
+            };
+            
+            // Clear form fields
+            document.getElementById('age').value = '';
+            document.getElementById('interests').value = '';
+            document.getElementById('additionalInfo').value = '';
+            document.getElementById('budget').value = '';
+            
+            // Remove selected classes
+            document.querySelectorAll('.option-card').forEach(card => {
+                card.classList.remove('selected');
+            });
+            
+            // Show gift finder, hide results
+            document.getElementById('gift-finder').style.display = 'block';
+            document.getElementById('results').style.display = 'none';
+            
+            // Go back to first step
+            showStep(1);
+            
+            // Scroll to top
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+
+        // Smooth scroll for anchor links
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) {
+                    target.scrollIntoView({ behavior: 'smooth' });
+                }
+            });
+        });
+
+        // Initialize
+        document.addEventListener('DOMContentLoaded', function() {
+            showStep(1);
+        });
+    </script>
+</body>
+</html>

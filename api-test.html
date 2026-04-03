@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>API Test</title>
+    <style>
+        body { font-family: Arial, sans-serif; padding: 20px; }
+        .status { padding: 10px; margin: 10px 0; border-radius: 5px; }
+        .success { background-color: #d4edda; color: #155724; }
+        .error { background-color: #f8d7da; color: #721c24; }
+        .info { background-color: #d1ecf1; color: #0c5460; }
+        button { padding: 10px 20px; margin: 5px; cursor: pointer; }
+    </style>
+</head>
+<body>
+    <h1>API Connection Test</h1>
+    
+    <div id="status"></div>
+    
+    <button onclick="testAPI()">Test API Health</button>
+    <button onclick="testRecommendations()">Test Recommendations</button>
+    <button onclick="clearStatus()">Clear Status</button>
+    
+    <div id="results"></div>
+
+    <script>
+        function updateStatus(message, type = 'info') {
+            const statusDiv = document.getElementById('status');
+            statusDiv.innerHTML = `<div class="status ${type}">${message}</div>`;
+        }
+
+        function clearStatus() {
+            document.getElementById('status').innerHTML = '';
+            document.getElementById('results').innerHTML = '';
+        }
+
+        async function testAPI() {
+            updateStatus('Testing API connection...', 'info');
+            
+            try {
+                const response = await fetch('http://localhost:8000/health');
+                
+                if (response.ok) {
+                    const data = await response.json();
+                    updateStatus(`✅ API Connected: ${data.status} (${data.version})`, 'success');
+                    console.log('API Response:', data);
+                } else {
+                    updateStatus(`❌ API Error: ${response.status} ${response.statusText}`, 'error');
+                }
+            } catch (error) {
+                updateStatus(`❌ Connection Error: ${error.message}`, 'error');
+                console.error('API Error:', error);
+            }
+        }
+
+        async function testRecommendations() {
+            updateStatus('Testing recommendations...', 'info');
+            
+            try {
+                const response = await fetch('http://localhost:8000/recommendations', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({
+                        user_input: 'Birthday gift for brother who loves music, budget 2000',
+                        max_recommendations: 3
+                    })
+                });
+                
+                if (response.ok) {
+                    const data = await response.json();
+                    updateStatus(`✅ Recommendations Working: ${data.recommendations?.length || 0} results`, 'success');
+                    
+                    const resultsDiv = document.getElementById('results');
+                    resultsDiv.innerHTML = `
+                        <h3>Recommendations:</h3>
+                        <pre>${JSON.stringify(data, null, 2)}</pre>
+                    `;
+                } else {
+                    updateStatus(`❌ Recommendations Error: ${response.status} ${response.statusText}`, 'error');
+                }
+            } catch (error) {
+                updateStatus(`❌ Recommendations Error: ${error.message}`, 'error');
+                console.error('Recommendations Error:', error);
+            }
+        }
+
+        // Auto-test on page load
+        window.onload = function() {
+            setTimeout(testAPI, 1000);
+        };
+    </script>
+</body>
+</html>
