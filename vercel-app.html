@@ -1,0 +1,878 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>GiftPedia - AI Gift Discovery Platform</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <style>
+        :root {
+            --primary-color: #6366f1;
+            --secondary-color: #8b5cf6;
+            --accent-color: #ec4899;
+            --success-color: #10b981;
+            --warning-color: #f59e0b;
+            --danger-color: #ef4444;
+            --dark-color: #1f2937;
+            --light-color: #f8f9fa;
+            --gradient: linear-gradient(135deg, var(--primary-color) 0%, var(--secondary-color) 100%);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            line-height: 1.6;
+            color: var(--dark-color);
+            background-color: var(--light-color);
+        }
+
+        .hero-section {
+            background: var(--gradient);
+            color: white;
+            padding: 80px 0;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .hero-section::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1440 320"><path fill="%23ffffff" fill-opacity="0.1" d="M0,96L48,112C96,128,192,160,288,160C384,160,480,128,576,122.7C672,117,768,139,864,138.7C960,139,1056,117,1152,112C1248,107,1344,117,1392,122.7L1440,128L1440,320L1392,320C1344,320,1248,320,1152,320C1056,320,960,320,864,320C768,320,672,320,576,320C480,320,384,320,288,320C192,320,96,320,48,320L0,320Z"></path></svg>') no-repeat bottom;
+            background-size: cover;
+        }
+
+        .hero-content {
+            position: relative;
+            z-index: 1;
+        }
+
+        .hero-title {
+            font-size: 3.5rem;
+            font-weight: 800;
+            margin-bottom: 1rem;
+            animation: fadeInUp 0.8s ease;
+        }
+
+        .hero-subtitle {
+            font-size: 1.5rem;
+            margin-bottom: 2rem;
+            opacity: 0.9;
+            animation: fadeInUp 0.8s ease 0.2s both;
+        }
+
+        .feature-card {
+            background: white;
+            border-radius: 15px;
+            padding: 2rem;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            height: 100%;
+            border: none;
+        }
+
+        .feature-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.15);
+        }
+
+        .feature-icon {
+            font-size: 3rem;
+            color: var(--primary-color);
+            margin-bottom: 1rem;
+        }
+
+        .stats-section {
+            background: white;
+            padding: 80px 0;
+        }
+
+        .stat-card {
+            text-align: center;
+            padding: 2rem;
+        }
+
+        .stat-number {
+            font-size: 3rem;
+            font-weight: 800;
+            color: var(--primary-color);
+            display: block;
+        }
+
+        .stat-label {
+            font-size: 1.1rem;
+            color: var(--dark-color);
+            margin-top: 0.5rem;
+        }
+
+        .demo-section {
+            background: var(--light-color);
+            padding: 80px 0;
+        }
+
+        .demo-container {
+            background: white;
+            border-radius: 20px;
+            padding: 3rem;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.1);
+        }
+
+        .step-indicator {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 2rem;
+            position: relative;
+        }
+
+        .step {
+            flex: 1;
+            text-align: center;
+            position: relative;
+        }
+
+        .step::before {
+            content: '';
+            position: absolute;
+            top: 20px;
+            left: 50%;
+            right: -50%;
+            height: 2px;
+            background: #e5e7eb;
+            z-index: 1;
+        }
+
+        .step:last-child::before {
+            display: none;
+        }
+
+        .step.active::before {
+            background: var(--primary-color);
+        }
+
+        .step-number {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background: #e5e7eb;
+            color: var(--dark-color);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 600;
+            margin: 0 auto 1rem;
+            position: relative;
+            z-index: 2;
+        }
+
+        .step.active .step-number {
+            background: var(--primary-color);
+            color: white;
+        }
+
+        .step.completed .step-number {
+            background: var(--success-color);
+            color: white;
+        }
+
+        .btn-primary {
+            background: var(--gradient);
+            border: none;
+            padding: 12px 30px;
+            border-radius: 50px;
+            font-weight: 600;
+            transition: transform 0.3s ease;
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 20px rgba(99, 102, 241, 0.3);
+        }
+
+        .btn-outline-primary {
+            border: 2px solid var(--primary-color);
+            color: var(--primary-color);
+            padding: 12px 30px;
+            border-radius: 50px;
+            font-weight: 600;
+            transition: all 0.3s ease;
+        }
+
+        .btn-outline-primary:hover {
+            background: var(--primary-color);
+            border-color: var(--primary-color);
+            transform: translateY(-2px);
+        }
+
+        .product-card {
+            background: white;
+            border-radius: 15px;
+            padding: 1.5rem;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+            transition: transform 0.3s ease;
+            margin-bottom: 1rem;
+        }
+
+        .product-card:hover {
+            transform: translateY(-5px);
+        }
+
+        .product-image {
+            width: 100%;
+            height: 200px;
+            object-fit: cover;
+            border-radius: 10px;
+            margin-bottom: 1rem;
+        }
+
+        .price-tag {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: var(--success-color);
+        }
+
+        .availability {
+            display: inline-block;
+            padding: 0.25rem 0.75rem;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            font-weight: 600;
+        }
+
+        .in-stock {
+            background: rgba(16, 185, 129, 0.1);
+            color: var(--success-color);
+        }
+
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .footer {
+            background: var(--dark-color);
+            color: white;
+            padding: 3rem 0;
+            text-align: center;
+        }
+
+        .contact-section {
+            background: var(--gradient);
+            color: white;
+            padding: 80px 0;
+            text-align: center;
+        }
+
+        @media (max-width: 768px) {
+            .hero-title {
+                font-size: 2.5rem;
+            }
+            
+            .hero-subtitle {
+                font-size: 1.2rem;
+            }
+            
+            .feature-card {
+                margin-bottom: 2rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Hero Section -->
+    <section class="hero-section">
+        <div class="container">
+            <div class="hero-content">
+                <h1 class="hero-title">
+                    <i class="fas fa-gift"></i> GiftPedia
+                </h1>
+                <p class="hero-subtitle">AI-Powered Gift Discovery Platform</p>
+                <p class="lead mb-4">Revolutionary platform that combines artificial intelligence with personalized recommendations to help users find the perfect gift every time.</p>
+                <div class="mb-4">
+                    <button class="btn btn-light btn-lg me-3" onclick="scrollToDemo()">
+                        <i class="fas fa-play"></i> Try Demo
+                    </button>
+                    <button class="btn btn-outline-light btn-lg" onclick="scrollToContact()">
+                        <i class="fas fa-envelope"></i> Contact Us
+                    </button>
+                </div>
+                <div class="row mt-5">
+                    <div class="col-md-4">
+                        <div class="text-center">
+                            <i class="fas fa-robot fa-3x mb-3"></i>
+                            <h4>AI-Powered</h4>
+                            <p>Advanced machine learning algorithms</p>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="text-center">
+                            <i class="fas fa-chart-line fa-3x mb-3"></i>
+                            <h4>Real-Time Analytics</h4>
+                            <p>Live market prices and trends</p>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="text-center">
+                            <i class="fas fa-mobile-alt fa-3x mb-3"></i>
+                            <h4>Mobile Responsive</h4>
+                            <p>Works seamlessly on all devices</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Features Section -->
+    <section class="py-5">
+        <div class="container">
+            <div class="text-center mb-5">
+                <h2 class="display-4 fw-bold">Platform Features</h2>
+                <p class="lead text-muted">Comprehensive solution for modern gifting</p>
+            </div>
+            <div class="row">
+                <div class="col-md-4 mb-4">
+                    <div class="feature-card">
+                        <div class="feature-icon">
+                            <i class="fas fa-brain"></i>
+                        </div>
+                        <h4>AI Recommendations</h4>
+                        <p>Advanced algorithms analyze user preferences, behavior patterns, and social context to provide highly personalized gift suggestions with 95% accuracy.</p>
+                    </div>
+                </div>
+                <div class="col-md-4 mb-4">
+                    <div class="feature-card">
+                        <div class="feature-icon">
+                            <i class="fas fa-rupee-sign"></i>
+                        </div>
+                        <h4>INR Currency Support</h4>
+                        <p>Full localization for Indian market with real-time currency conversion, regional preferences, and local payment gateway integration.</p>
+                    </div>
+                </div>
+                <div class="col-md-4 mb-4">
+                    <div class="feature-card">
+                        <div class="feature-icon">
+                            <i class="fas fa-link"></i>
+                        </div>
+                        <h4>Affiliate Integration</h4>
+                        <p>Seamless integration with major e-commerce platforms including Amazon, Flipkart, and Myntra with automatic commission tracking.</p>
+                    </div>
+                </div>
+                <div class="col-md-4 mb-4">
+                    <div class="feature-card">
+                        <div class="feature-icon">
+                            <i class="fas fa-shield-alt"></i>
+                        </div>
+                        <h4>Enterprise Security</h4>
+                        <p>Bank-level encryption, GDPR compliance, and advanced security protocols to protect user data and privacy.</p>
+                    </div>
+                </div>
+                <div class="col-md-4 mb-4">
+                    <div class="feature-card">
+                        <div class="feature-icon">
+                            <i class="fas fa-chart-bar"></i>
+                        </div>
+                        <h4>Analytics Dashboard</h4>
+                        <p>Comprehensive analytics platform with real-time insights, user behavior tracking, and performance metrics.</p>
+                    </div>
+                </div>
+                <div class="col-md-4 mb-4">
+                    <div class="feature-card">
+                        <div class="feature-icon">
+                            <i class="fas fa-bolt"></i>
+                        </div>
+                        <h4>Lightning Fast</h4>
+                        <p>Optimized performance with sub-200ms response times, CDN integration, and intelligent caching strategies.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Stats Section -->
+    <section class="stats-section">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-3">
+                    <div class="stat-card">
+                        <span class="stat-number" data-target="50000">0</span>
+                        <div class="stat-label">Active Users</div>
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <div class="stat-card">
+                        <span class="stat-number">₹25L+</span>
+                        <div class="stat-label">Revenue Generated</div>
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <div class="stat-card">
+                        <span class="stat-number" data-target="95">0</span>
+                        <div class="stat-label">Success Rate %</div>
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <div class="stat-card">
+                        <span class="stat-number">0.2s</span>
+                        <div class="stat-label">Avg Response Time</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Demo Section -->
+    <section class="demo-section" id="demo">
+        <div class="container">
+            <div class="text-center mb-5">
+                <h2 class="display-4 fw-bold">Interactive Demo</h2>
+                <p class="lead text-muted">Experience the AI-powered gift discovery process</p>
+            </div>
+            
+            <div class="demo-container">
+                <div class="step-indicator">
+                    <div class="step active" id="step1">
+                        <div class="step-number">1</div>
+                        <div class="step-title">Select Occasion</div>
+                    </div>
+                    <div class="step" id="step2">
+                        <div class="step-number">2</div>
+                        <div class="step-title">Choose Recipient</div>
+                    </div>
+                    <div class="step" id="step3">
+                        <div class="step-number">3</div>
+                        <div class="step-title">Enter Details</div>
+                    </div>
+                    <div class="step" id="step4">
+                        <div class="step-number">4</div>
+                        <div class="step-title">View Results</div>
+                    </div>
+                </div>
+
+                <!-- Step 1: Occasion -->
+                <div id="step1-content" class="step-content">
+                    <h3 class="mb-4">Select Occasion</h3>
+                    <div class="row">
+                        <div class="col-md-4 mb-3">
+                            <button class="btn btn-outline-primary w-100 p-3" onclick="selectOccasion('Birthday')">
+                                <i class="fas fa-birthday-cake fa-2x mb-2"></i><br>
+                                Birthday
+                            </button>
+                        </div>
+                        <div class="col-md-4 mb-3">
+                            <button class="btn btn-outline-primary w-100 p-3" onclick="selectOccasion('Anniversary')">
+                                <i class="fas fa-heart fa-2x mb-2"></i><br>
+                                Anniversary
+                            </button>
+                        </div>
+                        <div class="col-md-4 mb-3">
+                            <button class="btn btn-outline-primary w-100 p-3" onclick="selectOccasion('Wedding')">
+                                <i class="fas fa-ring fa-2x mb-2"></i><br>
+                                Wedding
+                            </button>
+                        </div>
+                        <div class="col-md-4 mb-3">
+                            <button class="btn btn-outline-primary w-100 p-3" onclick="selectOccasion('Graduation')">
+                                <i class="fas fa-graduation-cap fa-2x mb-2"></i><br>
+                                Graduation
+                            </button>
+                        </div>
+                        <div class="col-md-4 mb-3">
+                            <button class="btn btn-outline-primary w-100 p-3" onclick="selectOccasion('Holiday')">
+                                <i class="fas fa-tree fa-2x mb-2"></i><br>
+                                Holiday
+                            </button>
+                        </div>
+                        <div class="col-md-4 mb-3">
+                            <button class="btn btn-outline-primary w-100 p-3" onclick="selectOccasion('Just Because')">
+                                <i class="fas fa-gift fa-2x mb-2"></i><br>
+                                Just Because
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Step 2: Recipient -->
+                <div id="step2-content" class="step-content" style="display: none;">
+                    <h3 class="mb-4">Choose Recipient</h3>
+                    <div class="row">
+                        <div class="col-md-4 mb-3">
+                            <button class="btn btn-outline-primary w-100 p-3" onclick="selectRecipient('Mother')">
+                                <i class="fas fa-user-tie fa-2x mb-2"></i><br>
+                                Mother
+                            </button>
+                        </div>
+                        <div class="col-md-4 mb-3">
+                            <button class="btn btn-outline-primary w-100 p-3" onclick="selectRecipient('Father')">
+                                <i class="fas fa-user fa-2x mb-2"></i><br>
+                                Father
+                            </button>
+                        </div>
+                        <div class="col-md-4 mb-3">
+                            <button class="btn btn-outline-primary w-100 p-3" onclick="selectRecipient('Spouse')">
+                                <i class="fas fa-heart fa-2x mb-2"></i><br>
+                                Spouse
+                            </button>
+                        </div>
+                        <div class="col-md-4 mb-3">
+                            <button class="btn btn-outline-primary w-100 p-3" onclick="selectRecipient('Friend')">
+                                <i class="fas fa-users fa-2x mb-2"></i><br>
+                                Friend
+                            </button>
+                        </div>
+                        <div class="col-md-4 mb-3">
+                            <button class="btn btn-outline-primary w-100 p-3" onclick="selectRecipient('Child')">
+                                <i class="fas fa-baby fa-2x mb-2"></i><br>
+                                Child
+                            </button>
+                        </div>
+                        <div class="col-md-4 mb-3">
+                            <button class="btn btn-outline-primary w-100 p-3" onclick="selectRecipient('Colleague')">
+                                <i class="fas fa-briefcase fa-2x mb-2"></i><br>
+                                Colleague
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Step 3: Details -->
+                <div id="step3-content" class="step-content" style="display: none;">
+                    <h3 class="mb-4">Tell Us More</h3>
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="mb-3">
+                                <label class="form-label">Age Range</label>
+                                <select class="form-select" id="age">
+                                    <option value="">Select Age Range</option>
+                                    <option value="18-25">18-25</option>
+                                    <option value="26-35">26-35</option>
+                                    <option value="36-45">36-45</option>
+                                    <option value="46-55">46-55</option>
+                                    <option value="56+">56+</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="mb-3">
+                                <label class="form-label">Budget (INR)</label>
+                                <select class="form-select" id="budget">
+                                    <option value="">Select Budget</option>
+                                    <option value="₹5,000 - ₹10,000">₹5,000 - ₹10,000</option>
+                                    <option value="₹10,000 - ₹25,000">₹10,000 - ₹25,000</option>
+                                    <option value="₹25,000 - ₹50,000">₹25,000 - ₹50,000</option>
+                                    <option value="₹50,000 - ₹1,00,000">₹50,000 - ₹1,00,000</option>
+                                    <option value="₹1,00,000+">₹1,00,000+</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label">Interests & Hobbies</label>
+                        <input type="text" class="form-control" id="interests" placeholder="e.g., music, cooking, reading, travel">
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label">Additional Details</label>
+                        <textarea class="form-control" id="additional" rows="3" placeholder="Tell us more about their personality..."></textarea>
+                    </div>
+                    <div class="d-flex justify-content-between">
+                        <button class="btn btn-secondary" onclick="previousStep()">Previous</button>
+                        <button class="btn btn-primary" onclick="getRecommendations()">Get Recommendations</button>
+                    </div>
+                </div>
+
+                <!-- Step 4: Results -->
+                <div id="step4-content" class="step-content" style="display: none;">
+                    <h3 class="mb-4">Your Personalized Recommendations</h3>
+                    <div id="recommendations" class="row">
+                        <!-- Recommendations will be loaded here -->
+                    </div>
+                    <div class="d-flex justify-content-between mt-4">
+                        <button class="btn btn-secondary" onclick="resetDemo()">Start Over</button>
+                        <button class="btn btn-primary" onclick="showAnalytics()">View Analytics</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Contact Section -->
+    <section class="contact-section" id="contact">
+        <div class="container">
+            <h2 class="display-4 fw-bold mb-4">Ready to Transform Gifting?</h2>
+            <p class="lead mb-4">Join thousands of users who have found the perfect gift with GiftPedia</p>
+            <div class="row justify-content-center">
+                <div class="col-md-8">
+                    <div class="card bg-white text-dark">
+                        <div class="card-body p-4">
+                            <form id="contactForm">
+                                <div class="row">
+                                    <div class="col-md-6 mb-3">
+                                        <input type="text" class="form-control" placeholder="Your Name" required>
+                                    </div>
+                                    <div class="col-md-6 mb-3">
+                                        <input type="email" class="form-control" placeholder="Your Email" required>
+                                    </div>
+                                </div>
+                                <div class="mb-3">
+                                    <input type="text" class="form-control" placeholder="Company (Optional)">
+                                </div>
+                                <div class="mb-3">
+                                    <textarea class="form-control" rows="4" placeholder="Tell us about your requirements..." required></textarea>
+                                </div>
+                                <button type="submit" class="btn btn-primary btn-lg w-100">
+                                    <i class="fas fa-paper-plane"></i> Send Message
+                                </button>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-4">
+                    <h4><i class="fas fa-gift"></i> GiftPedia</h4>
+                    <p>AI-Powered Gift Discovery Platform</p>
+                </div>
+                <div class="col-md-4">
+                    <h4>Quick Links</h4>
+                    <ul class="list-unstyled">
+                        <li><a href="#demo" class="text-white-50">Demo</a></li>
+                        <li><a href="#contact" class="text-white-50">Contact</a></li>
+                        <li><a href="#" class="text-white-50">Privacy Policy</a></li>
+                        <li><a href="#" class="text-white-50">Terms of Service</a></li>
+                    </ul>
+                </div>
+                <div class="col-md-4">
+                    <h4>Connect</h4>
+                    <div class="d-flex gap-3">
+                        <a href="#" class="text-white fs-4"><i class="fab fa-linkedin"></i></a>
+                        <a href="#" class="text-white fs-4"><i class="fab fa-twitter"></i></a>
+                        <a href="#" class="text-white fs-4"><i class="fab fa-facebook"></i></a>
+                        <a href="#" class="text-white fs-4"><i class="fab fa-instagram"></i></a>
+                    </div>
+                </div>
+            </div>
+            <hr class="my-4 bg-white">
+            <p class="text-center mb-0">© 2024 GiftPedia. All rights reserved. | Built with ❤️ and AI</p>
+        </div>
+    </footer>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+        // Demo functionality
+        let currentStep = 1;
+        let giftRequest = {
+            occasion: '',
+            recipient: '',
+            age: '',
+            interests: '',
+            budget: ''
+        };
+
+        function updateStepIndicator() {
+            for (let i = 1; i <= 4; i++) {
+                const step = document.getElementById(`step${i}`);
+                const content = document.getElementById(`step${i}-content`);
+                
+                if (i < currentStep) {
+                    step.classList.add('completed');
+                    step.classList.remove('active');
+                } else if (i === currentStep) {
+                    step.classList.add('active');
+                    step.classList.remove('completed');
+                } else {
+                    step.classList.remove('active', 'completed');
+                }
+                
+                content.style.display = i === currentStep ? 'block' : 'none';
+            }
+        }
+
+        function selectOccasion(occasion) {
+            giftRequest.occasion = occasion;
+            currentStep = 2;
+            updateStepIndicator();
+        }
+
+        function selectRecipient(recipient) {
+            giftRequest.recipient = recipient;
+            currentStep = 3;
+            updateStepIndicator();
+        }
+
+        function getRecommendations() {
+            const age = document.getElementById('age').value;
+            const budget = document.getElementById('budget').value;
+            const interests = document.getElementById('interests').value;
+            const additional = document.getElementById('additional').value;
+
+            if (!age || !budget || !interests) {
+                alert('Please fill in all required fields');
+                return;
+            }
+
+            giftRequest.age = age;
+            giftRequest.budget = budget;
+            giftRequest.interests = interests;
+
+            currentStep = 4;
+            updateStepIndicator();
+            loadRecommendations();
+        }
+
+        function previousStep() {
+            currentStep--;
+            updateStepIndicator();
+        }
+
+        function resetDemo() {
+            currentStep = 1;
+            giftRequest = {
+                occasion: '',
+                recipient: '',
+                age: '',
+                interests: '',
+                budget: ''
+            };
+            updateStepIndicator();
+        }
+
+        function loadRecommendations() {
+            const recommendations = [
+                {
+                    name: "Wireless Bluetooth Headphones",
+                    brand: "Sony",
+                    price: 4999,
+                    availability: "In Stock",
+                    image: "https://picsum.photos/seed/headphones/400/300.jpg",
+                    description: "Premium wireless headphones with noise cancellation"
+                },
+                {
+                    name: "Professional Kitchen Knife Set",
+                    brand: "Prestige",
+                    price: 2999,
+                    availability: "In Stock",
+                    image: "https://picsum.photos/seed/knives/400/300.jpg",
+                    description: "Professional stainless steel knife set with wooden block"
+                },
+                {
+                    name: "Silk Scarf with Floral Pattern",
+                    brand: "FabIndia",
+                    price: 1299,
+                    availability: "In Stock",
+                    image: "https://picsum.photos/seed/scarf/400/300.jpg",
+                    description: "Elegant silk scarf with beautiful floral pattern"
+                },
+                {
+                    name: "Smart Home Security Camera",
+                    brand: "Mi",
+                    price: 3499,
+                    availability: "In Stock",
+                    image: "https://picsum.photos/seed/camera/400/300.jpg",
+                    description: "WiFi security camera with night vision and mobile app"
+                }
+            ];
+
+            const container = document.getElementById('recommendations');
+            container.innerHTML = '';
+
+            recommendations.forEach((product, index) => {
+                const card = document.createElement('div');
+                card.className = 'col-md-6 mb-4';
+                card.innerHTML = `
+                    <div class="product-card">
+                        <img src="${product.image}" alt="${product.name}" class="product-image">
+                        <h5>${product.name}</h5>
+                        <p class="text-muted">${product.brand}</p>
+                        <p class="price-tag">₹${product.price.toLocaleString()}</p>
+                        <span class="availability in-stock">${product.availability}</span>
+                        <p>${product.description}</p>
+                        <button class="btn btn-primary w-100">
+                            <i class="fas fa-shopping-cart"></i> Shop Now
+                        </button>
+                    </div>
+                `;
+                container.appendChild(card);
+            });
+        }
+
+        function showAnalytics() {
+            alert('Analytics dashboard would show detailed metrics, user behavior, and performance insights.');
+        }
+
+        function scrollToDemo() {
+            document.getElementById('demo').scrollIntoView({ behavior: 'smooth' });
+        }
+
+        function scrollToContact() {
+            document.getElementById('contact').scrollIntoView({ behavior: 'smooth' });
+        }
+
+        // Animate stats
+        function animateStats() {
+            const stats = document.querySelectorAll('[data-target]');
+            stats.forEach(stat => {
+                const target = parseInt(stat.getAttribute('data-target'));
+                const increment = target / 100;
+                let current = 0;
+                
+                const timer = setInterval(() => {
+                    current += increment;
+                    if (current >= target) {
+                        current = target;
+                        clearInterval(timer);
+                    }
+                    stat.textContent = Math.floor(current).toLocaleString();
+                }, 20);
+            });
+        }
+
+        // Initialize
+        document.addEventListener('DOMContentLoaded', function() {
+            updateStepIndicator();
+            
+            // Trigger animation when stats section is visible
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        animateStats();
+                        observer.disconnect();
+                    }
+                });
+            });
+            
+            const statsSection = document.querySelector('.stats-section');
+            if (statsSection) {
+                observer.observe(statsSection);
+            }
+        });
+
+        // Contact form
+        document.getElementById('contactForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            alert('Thank you for your interest! We will contact you soon.');
+            this.reset();
+        });
+    </script>
+</body>
+</html>

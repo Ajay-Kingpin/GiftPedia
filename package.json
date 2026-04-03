@@ -1,0 +1,19 @@
+{
+  "name": "giftpedia",
+  "version": "1.0.0",
+  "description": "GiftPedia AI-Powered Gift Discovery Platform",
+  "main": "index.html",
+  "scripts": {
+    "build": "echo 'Build complete'",
+    "start": "python -m http.server 3000",
+    "dev": "python -m http.server 3000"
+  },
+  "dependencies": {},
+  "devDependencies": {},
+  "keywords": ["gift", "ai", "recommendations", "ecommerce"],
+  "author": "GiftPedia Team",
+  "license": "MIT",
+  "engines": {
+    "node": ">=14.0.0"
+  }
+}
